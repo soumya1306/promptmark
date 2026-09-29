@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<title>Modern Collaborative Editor - Insert Tab Tools</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&amp;family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "tertiary": "#705c30",
+            "on-tertiary-fixed-variant": "#554020",
+            "primary": "#4a7c59",
+            "primary-hover": "#3d6749",
+            "surface-container-highest": "#e4e0d8",
+            "secondary-fixed": "#f0e8db",
+            "on-secondary-container": "#5e5548",
+            "tertiary-fixed": "#f8e0a8",
+            "tertiary-fixed-dim": "#dcc48e",
+            "on-tertiary": "#ffffff",
+            "on-background": "#2e3230",
+            "surface": "#fbfaf8",
+            "secondary": "#6b6358",
+            "surface-bright": "#fbfaf8",
+            "surface-container": "#f4f1ea",
+            "on-primary-container": "#183b24",
+            "primary-fixed": "#c8e8d0",
+            "primary-container": "#eaf2ec",
+            "secondary-fixed-dim": "#d4ccbf",
+            "surface-container-low": "#f7f4ed",
+            "on-primary-fixed-variant": "#2a6038",
+            "inverse-surface": "#2e3230",
+            "tertiary-container": "#c4a66a",
+            "inverse-on-surface": "#f5f0e8",
+            "error": "#b83230",
+            "secondary-container": "#f0e8db",
+            "on-primary": "#ffffff",
+            "surface-dim": "#dbd7cf",
+            "on-secondary": "#ffffff",
+            "on-secondary-fixed": "#1e1a13",
+            "on-primary-fixed": "#002110",
+            "inverse-primary": "#8ecf9e",
+            "on-error": "#ffffff",
+            "on-error-container": "#690005",
+            "surface-container-high": "#eae6de",
+            "on-tertiary-fixed": "#221a05",
+            "on-secondary-fixed-variant": "#4a4538",
+            "surface-tint": "#4a7c59",
+            "outline": "#74796e",
+            "surface-container-lowest": "#ffffff",
+            "error-container": "#ffdad8",
+            "background": "#f4f1ea",
+            "primary-fixed-dim": "#8ecf9e",
+            "on-tertiary-container": "#554020",
+            "outline-variant": "#e6e2da",
+            "surface-variant": "#e8e4dc",
+            "on-surface-variant": "#5a5e5a",
+            "on-surface": "#2e3230"
+          },
+          borderRadius: {
+            "DEFAULT": "0.75rem",
+            "lg": "0.875rem",
+            "xl": "1rem",
+            "2xl": "1.25rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            "headline": ["Literata", "serif"],
+            "display": ["Literata", "serif"],
+            "body": ["Nunito Sans", "sans-serif"],
+            "sans": ["Nunito Sans", "system-ui", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background font-body text-on-surface antialiased">
+<div class="flex flex-col h-screen w-screen overflow-hidden bg-[#ece8df] text-on-surface font-sans select-none text-[13px]">
+<!-- 1. TOP APP BAR / TITLE BAR (Terra Organic Styling) -->
+<header class="h-14 bg-surface-container-lowest border-b border-outline-variant text-on-surface flex items-center justify-between px-4 shrink-0 z-50">
+<!-- Left: Brand icon, Document Title & Cloud status -->
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center font-bold text-[14px] shadow-sm cursor-pointer hover:bg-primary-hover transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit_document</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline font-semibold text-[14.5px] text-on-surface tracking-tight truncate max-w-[260px] md:max-w-md">Q3 Brand Positioning &amp; Launch Strategy</span>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-surface-container text-secondary">v2.4</span>
+<button class="hover:text-primary text-outline/60 transition-colors" title="Star document">
+<span class="material-symbols-outlined text-[16px]">star</span>
+</button>
+</div>
+<div class="flex items-center gap-1.5 text-[11px] text-secondary">
+<span class="material-symbols-outlined text-[13px] text-primary">cloud_done</span>
+<span>Saved to Cloud</span>
+<span>•</span>
+<span>Last edit 3m ago by Sarah K.</span>
+</div>
+</div>
+</div>
+<!-- Center: Quick omni-search pill -->
+<div class="hidden md:flex items-center max-w-[320px] flex-1 mx-4">
+<div class="w-full flex items-center gap-2 bg-surface-container-low hover:bg-surface-container text-secondary focus-within:bg-white focus-within:text-on-surface focus-within:ring-2 focus-within:ring-primary/20 px-3 py-1.5 rounded-xl border border-outline-variant focus-within:border-primary transition-all cursor-text">
+<span class="material-symbols-outlined text-[16px] text-outline">search</span>
+<input class="bg-transparent text-[12px] w-full focus:outline-none placeholder-secondary/60 text-on-surface" placeholder="Search or jump to... (⌘K)" type="text"/>
+</div>
+</div>
+<!-- Right: Presence, AI Assistant, Share & Profile -->
+<div class="flex items-center gap-2.5">
+<!-- Multiplayer Collaborator Avatars -->
+<div class="flex items-center -space-x-2 mr-1">
+<div class="w-7 h-7 rounded-full bg-[#5b4570] border-2 border-white flex items-center justify-center text-white text-[10px] font-bold shadow-xs ring-2 ring-[#5b4570]/25" title="Sarah K. (Editing paragraph 2)">SK</div>
+<div class="w-7 h-7 rounded-full bg-[#8c5040] border-2 border-white flex items-center justify-center text-white text-[10px] font-bold shadow-xs ring-2 ring-[#8c5040]/25" title="Alex M. (Reviewing tasks)">AM</div>
+<div class="w-7 h-7 rounded-full bg-[#3d6749] border-2 border-white flex items-center justify-center text-white text-[10px] font-bold shadow-xs" title="David C.">DC</div>
+</div>
+<!-- Comments badge toggle -->
+<button class="h-8 px-2.5 rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface flex items-center gap-1.5 text-[12px] font-semibold transition-colors relative" title="Comments">
+<span class="material-symbols-outlined text-[17px]">mode_comment</span>
+<span class="hidden lg:inline text-[11px] font-bold">3</span>
+</button>
+<!-- Copilot AI Action -->
+<button class="h-8 px-3 rounded-xl bg-primary-container hover:bg-[#dce9df] text-primary border border-primary/25 font-semibold text-[12px] flex items-center gap-1.5 transition-all shadow-xs group">
+<span class="material-symbols-outlined text-[16px] text-primary group-hover:rotate-12 transition-transform">auto_awesome</span>
+<span class="hidden sm:inline">Ask Copilot</span>
+</button>
+<!-- Primary Share Button -->
+<button class="h-8 px-3.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold text-[12px] flex items-center gap-1.5 shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+<span>Share</span>
+</button>
+<!-- User Profile Avatar -->
+<div class="w-8 h-8 rounded-full bg-[#3d6749] text-white font-bold text-[11px] flex items-center justify-center shadow-xs cursor-pointer hover:ring-2 hover:ring-primary/40 transition-all">
+        ME
+      </div>
+</div>
+</header>
+<!-- 2. FULL TERRA RIBBON (Insert Tab Active) -->
+<div class="bg-surface-container-lowest border-b border-outline-variant shrink-0 z-40 select-none">
+<!-- Tab list header -->
+<div class="flex items-center justify-between px-4 border-b border-outline-variant bg-surface-container-low text-[13px]">
+<div class="flex items-center gap-1 -mb-px">
+<button class="flex items-center gap-1.5 px-3 py-2 text-[12px] font-semibold text-secondary hover:text-on-surface hover:bg-surface/80 transition-colors border-b-2 border-transparent rounded-t-xl">
+<span class="material-symbols-outlined text-[15px]">edit_note</span>
+<span>Home</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 text-[12px] font-bold text-primary border-b-2 border-primary bg-surface-container-lowest transition-colors rounded-t-xl shadow-xs">
+<span class="material-symbols-outlined text-[15px] text-primary">add_circle</span>
+<span>Insert</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 text-[12px] font-semibold text-secondary hover:text-on-surface hover:bg-surface/80 transition-colors border-b-2 border-transparent rounded-t-xl relative">
+<span class="material-symbols-outlined text-[15px]">rate_review</span>
+<span>Review &amp; Changes</span>
+<span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-primary-container text-primary ml-1">4</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 text-[12px] font-semibold text-secondary hover:text-on-surface hover:bg-surface/80 transition-colors border-b-2 border-transparent rounded-t-xl">
+<span class="material-symbols-outlined text-[15px]">dashboard_customize</span>
+<span>Layout &amp; Tools</span>
+</button>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 text-[11px] font-semibold text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-full border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>Track Changes ON</span>
+</div>
+<div class="h-3 w-px bg-outline-variant"></div>
+<button class="h-6 px-2.5 rounded-full hover:bg-surface-container text-[11px] font-semibold text-secondary hover:text-on-surface flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[14px]">keyboard_command_key</span>
+<span>Shortcuts</span>
+</button>
+</div>
+</div>
+<!-- Active Insert Tools Ribbon Strip -->
+<div class="px-3 py-2 flex items-center justify-between overflow-x-auto gap-2 text-[13px] bg-surface-container-lowest">
+<div class="flex items-center gap-1 min-w-max">
+<!-- Media & Assets -->
+<div class="flex items-center gap-1" title="Media &amp; Assets">
+<div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl hover:bg-surface-container cursor-pointer text-on-surface font-semibold border border-transparent hover:border-outline-variant transition-all" title="Insert Image">
+<span class="material-symbols-outlined text-[16px] text-primary">image</span>
+<span class="text-[12px]">Image</span>
+<span class="material-symbols-outlined text-[14px] text-outline">expand_more</span>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl hover:bg-surface-container cursor-pointer text-on-surface font-semibold border border-transparent hover:border-outline-variant transition-all" title="Insert Table">
+<span class="material-symbols-outlined text-[16px] text-primary">table_chart</span>
+<span class="text-[12px]">Table</span>
+<span class="material-symbols-outlined text-[14px] text-outline">expand_more</span>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl hover:bg-surface-container cursor-pointer text-secondary hover:text-on-surface transition-all font-semibold" title="Insert Chart / Graph">
+<span class="material-symbols-outlined text-[16px]">bar_chart</span>
+<span class="text-[12px]">Chart</span>
+<span class="material-symbols-outlined text-[14px] text-outline">expand_more</span>
+</div>
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-all font-semibold" title="Drawing / Canvas">
+<span class="material-symbols-outlined text-[16px]">draw</span>
+<span class="text-[12px]">Drawing</span>
+</button>
+</div>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<!-- Structured Blocks -->
+<div class="flex items-center gap-1" title="Structured Blocks">
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-primary font-bold bg-primary-container/80 border border-primary/20 hover:bg-primary-container transition-all" title="Insert Callout Box">
+<span class="material-symbols-outlined text-[16px] text-primary">lightbulb</span>
+<span class="text-[12px]">Callout</span>
+<span class="material-symbols-outlined text-[14px] text-primary">expand_more</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-all font-semibold" title="Insert Code Block">
+<span class="material-symbols-outlined text-[16px]">code_blocks</span>
+<span class="text-[12px]">Code</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-all font-semibold" title="Insert Quote">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+<span class="text-[12px]">Quote</span>
+</button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-colors" title="Horizontal Divider">
+<span class="material-symbols-outlined text-[17px]">horizontal_rule</span>
+</button>
+</div>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<!-- Components & Widgets -->
+<div class="flex items-center gap-1" title="Components &amp; Widgets">
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-all font-semibold" title="Checklist">
+<span class="material-symbols-outlined text-[16px]">checklist</span>
+<span class="text-[12px]">Task List</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-all font-semibold" title="Dropdown / Tag Pill">
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down_circle</span>
+<span class="text-[12px]">Status Pill</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-all font-semibold" title="Date &amp; Reminder">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="text-[12px]">Date</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-all font-semibold" title="Table of Contents">
+<span class="material-symbols-outlined text-[16px]">toc</span>
+<span class="text-[12px]">TOC</span>
+</button>
+</div>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<!-- Embed & Link -->
+<div class="flex items-center gap-0.5" title="Embed &amp; Link">
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-colors" title="Insert Link (⌘K)">
+<span class="material-symbols-outlined text-[16px]">link</span>
+</button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-colors" title="Bookmark">
+<span class="material-symbols-outlined text-[16px]">bookmark</span>
+</button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-colors" title="Special Characters / Formula">
+<span class="material-symbols-outlined text-[16px]">functions</span>
+</button>
+</div>
+</div>
+<!-- Right Ribbon tools -->
+<div class="flex items-center gap-2 ml-4 shrink-0 min-w-max">
+<div class="flex items-center gap-1.5 text-[11px] font-semibold text-secondary bg-surface-container-low border border-outline-variant px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-primary">grid_on</span>
+<span>Table Picker: 3 × 3</span>
+</div>
+<button class="h-7 px-3 rounded-full bg-primary-container hover:bg-[#dce9df] text-primary text-[12px] font-bold flex items-center gap-1 transition-all border border-primary/25 shadow-xs" title="AI Polish &amp; Rewrite">
+<span class="material-symbols-outlined text-[15px]">magic_button</span>
+<span>AI Polish</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 3. WORKSPACE DESK & REALISTIC PAGINATED DOCUMENT CANVAS -->
+<main class="flex-1 overflow-y-auto overflow-x-auto bg-[#ece8df] py-8 px-4 flex justify-center items-start">
+<div class="flex gap-6 max-w-full items-start justify-center">
+<!-- Paginated Document Sheet: Classic 8.5" x 11" proportions with soft Terra rounding & drop-shadow -->
+<div class="w-[816px] min-h-[1056px] bg-surface-container-lowest text-on-surface shadow-[0_8px_24px_rgba(46,50,48,0.08),0_2px_6px_rgba(46,50,48,0.04)] border border-outline-variant rounded-2xl p-16 sm:p-20 relative transition-all font-body">
+<!-- Watermark/Header Area margin guide line -->
+<div class="border-b border-dashed border-outline-variant pb-2 mb-8 flex justify-between text-[11px] text-secondary">
+<span>Header: Q3 Strategy Working Draft</span>
+<span class="font-medium text-tertiary">Confidential • Internal Only</span>
+</div>
+<!-- Document Title -->
+<h1 class="text-[30px] font-headline font-bold text-on-surface tracking-tight leading-snug mb-3 pb-2 border-b border-outline-variant">
+          Q3 Brand Positioning &amp; Launch Strategy
+        </h1>
+<!-- Metadata / Authorship -->
+<div class="flex items-center gap-3 text-[12px] text-secondary mb-8 pb-3 border-b border-outline-variant">
+<span class="font-bold text-on-surface">Sarah K.</span>
+<span>•</span>
+<span>Product Lead</span>
+<span>•</span>
+<span>Last modified 3 mins ago</span>
+<span class="ml-auto inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-primary-container text-primary rounded-full text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+            3 active collaborators
+          </span>
+</div>
+<!-- Section 1: Executive Summary -->
+<div class="mb-8">
+<h2 class="text-[19px] font-headline font-bold text-on-surface mb-3">
+            1. Executive Summary &amp; Market Drivers
+          </h2>
+<p class="text-[14px] text-on-surface leading-relaxed mb-4 text-justify">
+            As category boundaries dissolve across modern productivity suites, our growth vector pivots from single-player utility to synchronous workspace density. Market telemetry underscores a deliberate enterprise migration away from siloed tools toward composable real-time canvases.
+          </p>
+<!-- Multiplayer Active Selection & Caret: Sarah K. (Violet/Indigo) -->
+<div class="relative group my-2">
+<p class="text-[14px] text-on-surface leading-relaxed text-justify">
+              Our initial user research demonstrates that the threshold for buyer conversion depends on 
+              <span class="bg-[#e9e3f3] text-[#3e2354] px-1 py-0.5 rounded-md relative border-b-2 border-[#5b4570] cursor-text" title="Active multiplayer selection by Sarah K.">
+                accelerating enterprise time-to-value across our tier-1 accounts
+                <!-- Sarah K. Caret tag -->
+<span class="absolute -top-5 right-0 bg-[#5b4570] text-white text-[9px] font-bold px-1.5 py-0.2 rounded-t flex items-center gap-1 shadow-xs pointer-events-none">
+<span class="w-1 h-1 rounded-full bg-white animate-pulse"></span>
+                  Sarah K.
+                </span>
+</span> 
+              while simultaneously lowering setup friction. Retention doubles whenever teams launch their first collaborative session within forty-eight hours of onboarding.
+            </p>
+</div>
+</div>
+<!-- Track Changes Revision Markup -->
+<div class="mb-8 p-3.5 bg-surface-container-low border-l-4 border-primary rounded-r-xl border border-outline-variant/60">
+<div class="flex items-center gap-2 mb-1.5 text-[11px] text-secondary">
+<span class="font-bold text-primary">Track Changes:</span>
+<span>Suggested revision by Sarah K. (8m ago)</span>
+</div>
+<p class="text-[14px] leading-relaxed text-on-surface">
+            Instead of relying strictly on 
+            <span class="line-through text-error bg-error-container/60 px-1.5 py-0.5 rounded" title="Deleted by Sarah K.">our legacy direct outbound playbook</span>, 
+            we will anchor quarterly acquisition in 
+            <span class="underline text-primary bg-primary-container font-semibold px-1.5 py-0.5 rounded" title="Inserted by Sarah K.">a customer-led community flywheel</span> 
+            supported by verified collaborative project templates.
+          </p>
+</div>
+<!-- Strategic Alignment Note: Inserted Callout Box -->
+<div class="mb-8 p-4 bg-primary-container/45 border-l-4 border-primary rounded-r-xl border border-primary/20 shadow-xs">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-1.5 text-primary font-bold text-[13px]">
+<span class="material-symbols-outlined text-[17px] text-primary">lightbulb</span>
+<span>Strategic Alignment Note</span>
+</div>
+<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white text-primary border border-primary/25 shadow-2xs">Recently Inserted</span>
+</div>
+<p class="text-[13px] leading-relaxed text-on-surface">
+            All executive summaries must align with the revised Q3 multiplayer conversion funnel before progressing to legal review and external go-to-market execution.
+          </p>
+</div>
+<!-- Deliverables Table Block -->
+<div class="mb-8">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-[14.5px] font-headline font-bold text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">table_chart</span>
+              Deliverables &amp; Target Milestones
+            </h3>
+<span class="text-[11px] font-semibold text-secondary">Table (3 × 3)</span>
+</div>
+<div class="overflow-x-auto border border-outline-variant rounded-xl shadow-2xs">
+<table class="w-full text-left text-[12px] border-collapse">
+<thead class="bg-surface-container border-b border-outline-variant text-secondary">
+<tr>
+<th class="p-2.5 font-bold text-on-surface border-r border-outline-variant">Phase / Milestone</th>
+<th class="p-2.5 font-bold text-on-surface border-r border-outline-variant">Owner</th>
+<th class="p-2.5 font-bold text-on-surface">Status &amp; Target Date</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant text-on-surface">
+<tr class="hover:bg-surface-container/40 transition-colors">
+<td class="p-2.5 font-semibold border-r border-outline-variant">Live Sync v2 Protocol Spec</td>
+<td class="p-2.5 text-secondary border-r border-outline-variant">Infra Core Team</td>
+<td class="p-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-primary-container text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                      Complete (Jul 18)
+                    </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/40 bg-[#f9f4ec]/50 transition-colors">
+<td class="p-2.5 font-semibold border-r border-outline-variant">Interactive Pricing Calculator</td>
+<td class="p-2.5 text-secondary border-r border-outline-variant">Alex M. &amp; Finance</td>
+<td class="p-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-secondary-container text-tertiary">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                      Reviewing (Aug 04)
+                    </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/40 transition-colors">
+<td class="p-2.5 font-semibold border-r border-outline-variant">Enterprise Customer Feedback Clinic</td>
+<td class="p-2.5 text-secondary border-r border-outline-variant">Sarah K.</td>
+<td class="p-2.5">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-surface-container text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                      Scheduled (Aug 12)
+                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Section 2: Deliverables Checklist & Alex M. Caret -->
+<div class="mb-8">
+<h2 class="text-[19px] font-headline font-bold text-on-surface mb-3 flex items-center justify-between">
+<span>2. Q3 Readiness Deliverables</span>
+<span class="text-[12px] font-semibold text-secondary">3 of 5 items completed</span>
+</h2>
+<div class="space-y-2.5 text-[13px]">
+<label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-surface-container cursor-pointer transition-colors">
+<input checked="" class="mt-0.5 w-4 h-4 text-primary rounded border-outline focus:ring-0" type="checkbox"/>
+<span class="line-through text-secondary">Publish revised Developer API specifications for Live Sync v2 <span class="text-[11px] text-outline">(Approved by Infra Leads)</span></span>
+</label>
+<label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-surface-container cursor-pointer transition-colors">
+<input checked="" class="mt-0.5 w-4 h-4 text-primary rounded border-outline focus:ring-0" type="checkbox"/>
+<span class="line-through text-secondary">Finalize interactive pricing calculator for tiered multiplayer seats</span>
+</label>
+<!-- Alex M. live cursor at checkbox item -->
+<div class="relative">
+<label class="flex items-start gap-2.5 p-2 rounded-xl bg-[#faece5]/60 border-l-3 border-[#8c5040] cursor-pointer">
+<input class="mt-0.5 w-4 h-4 text-primary rounded border-outline focus:ring-0" type="checkbox"/>
+<span class="font-bold text-on-surface">Customer advisory board early review &amp; live feedback clinic</span>
+</label>
+<!-- Caret flag for Alex M. -->
+<div class="absolute -top-3.5 right-4 bg-[#8c5040] text-white text-[9px] font-bold px-1.5 py-0.2 rounded shadow-xs flex items-center gap-1 pointer-events-none">
+<span class="w-1 h-1 rounded-full bg-white animate-pulse"></span>
+                Alex M.
+              </div>
+</div>
+<label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-surface-container cursor-pointer transition-colors">
+<input class="mt-0.5 w-4 h-4 text-primary rounded border-outline focus:ring-0" type="checkbox"/>
+<span class="text-on-surface">Deploy telemetry dashboards for team invite velocity tracking</span>
+</label>
+</div>
+</div>
+<!-- Document Footer / Page Number indicator -->
+<div class="mt-16 pt-4 border-t border-dashed border-outline-variant flex justify-between text-[11px] text-secondary">
+<span>Q3 Brand Positioning &amp; Launch Strategy.docx</span>
+<span>Page 1 of 4</span>
+</div>
+</div>
+<!-- Right Margin Comment Callout Card (Terra styled) -->
+<div class="w-72 shrink-0 hidden xl:flex flex-col gap-3 sticky top-4">
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant shadow-[0_4px_16px_rgba(46,50,48,0.06)] relative">
+<!-- Comment connector indicator line -->
+<div class="absolute -left-3 top-4 w-3 h-0.5 bg-[#5b4570]"></div>
+<div class="flex items-center justify-between mb-2.5">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-[#5b4570] text-white font-bold text-[10px] flex items-center justify-center">SK</div>
+<div>
+<span class="font-bold text-[12px] text-on-surface block leading-tight">Sarah K.</span>
+<span class="text-[10px] text-secondary block">12m ago</span>
+</div>
+</div>
+<div class="flex items-center gap-0.5">
+<button class="w-6 h-6 rounded-lg hover:bg-surface-container text-secondary hover:text-primary flex items-center justify-center transition-colors" title="Resolve Thread">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</button>
+<button class="w-6 h-6 rounded-lg hover:bg-surface-container text-secondary flex items-center justify-center transition-colors" title="More Options">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-container p-2 rounded-lg text-[11px] text-on-surface-variant italic mb-2.5 border-l-2 border-[#5b4570]">
+            “...accelerating enterprise time-to-value...”
+          </div>
+<p class="text-[12px] text-on-surface mb-3 leading-snug">
+            Should we include APAC-specific deployment benchmarks here before Thursday’s review?
+          </p>
+<!-- Reply input -->
+<div class="flex items-center gap-1.5 bg-surface-container-low border border-outline-variant rounded-xl px-2.5 py-1.5 focus-within:border-primary focus-within:bg-white transition-all">
+<input class="bg-transparent text-[11px] w-full focus:outline-none placeholder-secondary/60 text-on-surface" placeholder="Reply or @mention..." type="text"/>
+<button class="text-primary hover:text-primary-hover transition-colors">
+<span class="material-symbols-outlined text-[15px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- 4. BOTTOM STATUS BAR (Terra styling) -->
+<footer class="h-9 bg-surface-container-lowest border-t border-outline-variant text-secondary flex items-center justify-between px-4 text-[12px] select-none shrink-0 z-50">
+<!-- Left document statistics -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 font-bold text-on-surface">
+<span class="material-symbols-outlined text-[15px] text-secondary">description</span>
+<span>Page 1 of 4</span>
+</div>
+<div class="h-3 w-px bg-outline-variant"></div>
+<span class="font-semibold">1,420 words</span>
+<div class="h-3 w-px bg-outline-variant"></div>
+<span class="font-semibold">5 min read</span>
+<div class="hidden sm:flex items-center gap-1.5 text-primary font-bold">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+<span class="text-on-surface-variant font-medium">All systems synced</span>
+</div>
+</div>
+<!-- Right view modes & zoom -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1 bg-surface-container p-0.5 rounded-full border border-outline-variant">
+<button class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white text-on-surface shadow-2xs">Print</button>
+<button class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-secondary hover:text-on-surface">Pageless</button>
+</div>
+<div class="h-3 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-1 text-[11px] font-semibold text-secondary">
+<button class="w-5 h-5 flex items-center justify-center rounded-md hover:bg-surface-container text-on-surface font-bold">-</button>
+<span class="w-9 text-center text-on-surface font-bold">100%</span>
+<button class="w-5 h-5 flex items-center justify-center rounded-md hover:bg-surface-container text-on-surface font-bold">+</button>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

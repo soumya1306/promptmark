@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<title>Modern Collaborative Editor - Review &amp; Changes Tab Tools (Terra)</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#4a7c59",
+            "primary-dark": "#3d6749",
+            "primary-container": "#78a886",
+            "on-primary-container": "#d8f0de",
+            "primary-fixed": "#c8e8d0",
+            "surface": "#faf6f0",
+            "surface-bright": "#faf6f0",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f5f1ea",
+            "surface-container": "#f0ece4",
+            "surface-container-high": "#eae6de",
+            "surface-container-highest": "#e4e0d8",
+            "on-surface": "#2e3230",
+            "on-surface-variant": "#4a4e4a",
+            "secondary": "#6b6358",
+            "secondary-container": "#f0e8db",
+            "tertiary": "#705c30",
+            "outline": "#74796e",
+            "outline-variant": "#c4c8bc",
+            "error": "#b83230",
+            "error-container": "#ffdad8",
+            "terra-warm": "#fbfaf8",
+            "terra-stone": "#e6e2da",
+            "terra-sage-tint": "#eaf2ec"
+          },
+          borderRadius: {
+            "DEFAULT": "0.5rem",
+            "lg": "0.75rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            sans: ["Nunito Sans", "system-ui", "sans-serif"],
+            body: ["Nunito Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface-container-low font-sans text-on-surface antialiased">
+<div class="flex flex-col h-screen w-screen overflow-hidden bg-[#f4f1ea] text-[#2e3230] select-none text-[13px]">
+<!-- 1. TOP APP BAR / TITLE BAR (Terra Style) -->
+<header class="h-14 bg-[#fbfaf8] border-b border-[#e6e2da] text-[#2e3230] flex items-center justify-between px-4 shrink-0 z-50">
+<!-- Left: Brand icon, Document Title & Cloud status -->
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center font-bold text-[14px] shadow-sm cursor-pointer hover:bg-primary-dark transition-all">
+<span class="material-symbols-outlined text-[19px]">edit_document</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-bold text-[14px] text-on-surface tracking-tight truncate max-w-[260px] md:max-w-md">Q3 Brand Positioning &amp; Launch Strategy</span>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#eaf2ec] text-primary border border-primary/20">v2.4</span>
+<button class="hover:text-primary text-[#9c9689] transition-colors" title="Star document">
+<span class="material-symbols-outlined text-[16px]">star</span>
+</button>
+</div>
+<div class="flex items-center gap-1.5 text-[11px] text-[#787267]">
+<span class="material-symbols-outlined text-[13px] text-primary">cloud_done</span>
+<span>Saved to Cloud</span>
+<span>•</span>
+<span>Last edit 3m ago by Sarah K.</span>
+</div>
+</div>
+</div>
+<!-- Center: Quick omni-search pill -->
+<div class="hidden md:flex items-center max-w-[320px] flex-1 mx-4">
+<div class="w-full flex items-center gap-2 bg-[#f0ece4] hover:bg-[#eae6de] text-[#5e5548] focus-within:bg-white focus-within:text-[#2e3230] focus-within:ring-2 focus-within:ring-primary/20 px-3.5 py-1.5 rounded-xl border border-transparent focus-within:border-primary transition-all cursor-text">
+<span class="material-symbols-outlined text-[16px] text-primary">search</span>
+<input class="bg-transparent text-[12px] w-full focus:outline-none placeholder-[#8b8478]" placeholder="Search or jump to... (⌘K)" type="text"/>
+</div>
+</div>
+<!-- Right: Presence, AI Assistant, Share & Profile -->
+<div class="flex items-center gap-2.5">
+<!-- Multiplayer Collaborator Avatars -->
+<div class="flex items-center -space-x-2 mr-1">
+<div class="w-7 h-7 rounded-full bg-[#5f7358] border-2 border-[#fbfaf8] flex items-center justify-center text-white text-[10px] font-bold shadow-xs ring-2 ring-[#5f7358]/25" title="Sarah K. (Editing paragraph 2)">SK</div>
+<div class="w-7 h-7 rounded-full bg-[#9e6d42] border-2 border-[#fbfaf8] flex items-center justify-center text-white text-[10px] font-bold shadow-xs ring-2 ring-[#9e6d42]/25" title="Alex M. (Reviewing tasks)">AM</div>
+<div class="w-7 h-7 rounded-full bg-[#4a7c59] border-2 border-[#fbfaf8] flex items-center justify-center text-white text-[10px] font-bold shadow-xs" title="David C.">DC</div>
+</div>
+<!-- Comments badge toggle -->
+<button class="h-8 px-2.5 rounded-xl hover:bg-[#eae6de] text-[#5e5548] hover:text-[#2e3230] flex items-center gap-1.5 text-[12px] font-medium transition-colors relative" title="Comments">
+<span class="material-symbols-outlined text-[17px]">mode_comment</span>
+<span class="hidden lg:inline font-semibold">3</span>
+</button>
+<!-- Copilot AI Action -->
+<button class="h-8 px-3 rounded-xl bg-[#eaf2ec] hover:bg-[#dbe9de] text-primary border border-primary/25 font-semibold text-[12px] flex items-center gap-1.5 transition-all shadow-xs group">
+<span class="material-symbols-outlined text-[16px] text-primary group-hover:scale-110 transition-transform">auto_awesome</span>
+<span class="hidden sm:inline">Ask Copilot</span>
+</button>
+<!-- Primary Share Button -->
+<button class="h-8 px-3.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-semibold text-[12px] flex items-center gap-1.5 shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+<span>Share</span>
+</button>
+<!-- User Profile Avatar -->
+<div class="w-8 h-8 rounded-full bg-tertiary text-white font-bold text-[11px] flex items-center justify-center shadow-xs cursor-pointer hover:ring-2 hover:ring-primary/40 transition-all">
+        ME
+      </div>
+</div>
+</header>
+<!-- 2. FULL TERRA REVIEW RIBBON -->
+<div class="bg-[#fbfaf8] border-b border-[#e6e2da] shrink-0 z-40 select-none">
+<!-- Top Ribbon Tabs -->
+<div class="flex items-center justify-between px-4 border-b border-[#e6e2da] bg-[#f5f1ea] text-[13px]">
+<div class="flex items-center gap-1 -mb-px">
+<button class="flex items-center gap-1.5 px-3.5 py-2 text-[12px] font-medium text-[#6b6358] hover:text-[#2e3230] hover:bg-white/60 transition-colors border-b-2 border-transparent rounded-t-lg">
+<span class="material-symbols-outlined text-[16px]">edit_note</span>
+<span>Home</span>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-2 text-[12px] font-medium text-[#6b6358] hover:text-[#2e3230] hover:bg-white/60 transition-colors border-b-2 border-transparent rounded-t-lg">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span>Insert</span>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-2 text-[12px] font-bold text-primary border-b-2 border-primary bg-[#fbfaf8] transition-colors rounded-t-lg relative shadow-xs">
+<span class="material-symbols-outlined text-[16px]">rate_review</span>
+<span>Review &amp; Changes</span>
+<span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#eaf2ec] text-primary border border-primary/30 ml-1">4</span>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-2 text-[12px] font-medium text-[#6b6358] hover:text-[#2e3230] hover:bg-white/60 transition-colors border-b-2 border-transparent rounded-t-lg">
+<span class="material-symbols-outlined text-[16px]">dashboard_customize</span>
+<span>Layout &amp; Tools</span>
+</button>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 text-[11px] font-semibold text-primary bg-[#eaf2ec] px-2.5 py-1 rounded-full border border-primary/25">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>Track Changes ON</span>
+</div>
+<div class="h-3 w-px bg-[#e6e2da]"></div>
+<button class="h-6 px-2 rounded-lg hover:bg-white text-[11px] font-medium text-[#6b6358] hover:text-[#2e3230] flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[14px]">keyboard_command_key</span>
+<span>Shortcuts</span>
+</button>
+</div>
+</div>
+<!-- Review Ribbon Action Toolbar -->
+<div class="px-3.5 py-2 flex items-center justify-between overflow-x-auto gap-2 text-[13px] bg-[#fbfaf8]">
+<div class="flex items-center gap-1.5 min-w-max">
+<!-- 1. Track Changes Controls -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#eaf2ec] border border-primary/30 shadow-xs" title="Track Changes status">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-[12px] font-bold text-primary">Track Changes: ON</span>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1 rounded-xl hover:bg-[#f0ece4] cursor-pointer text-[#2e3230] font-semibold border border-[#e6e2da] transition-all" title="Markup Display View">
+<span class="material-symbols-outlined text-[16px] text-primary">visibility</span>
+<span class="text-[12px]">All Markup</span>
+<span class="material-symbols-outlined text-[15px] text-[#74796e]">expand_more</span>
+</div>
+<div class="h-5 w-px bg-[#e6e2da] mx-1"></div>
+<!-- 2. Resolution Actions -->
+<div class="flex items-center bg-[#f0ece4] rounded-xl p-0.5 border border-[#e6e2da]">
+<button class="h-7 px-2.5 rounded-lg flex items-center gap-1 bg-white shadow-xs text-primary hover:bg-[#fbfaf8] font-bold text-[12px] transition-all" title="Accept &amp; Move Next">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+<span>Accept</span>
+<span class="material-symbols-outlined text-[14px] text-[#74796e]">arrow_drop_down</span>
+</button>
+<button class="h-7 px-2.5 rounded-lg flex items-center gap-1 hover:bg-white text-error font-bold text-[12px] transition-all" title="Reject &amp; Move Next">
+<span class="material-symbols-outlined text-[16px] text-error">cancel</span>
+<span>Reject</span>
+<span class="material-symbols-outlined text-[14px] text-[#74796e]">arrow_drop_down</span>
+</button>
+</div>
+<div class="flex items-center gap-0.5 ml-1" title="Change Navigation">
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-[#f0ece4] text-[#6b6358] hover:text-[#2e3230] transition-colors" title="Previous Change (Shift+F7)">
+<span class="material-symbols-outlined text-[17px]">arrow_upward</span>
+</button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-[#f0ece4] text-[#6b6358] hover:text-[#2e3230] transition-colors" title="Next Change (F7)">
+<span class="material-symbols-outlined text-[17px]">arrow_downward</span>
+</button>
+</div>
+<div class="h-5 w-px bg-[#e6e2da] mx-1"></div>
+<!-- 3. Collaboration, Comments & Compare Tools -->
+<button class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white hover:bg-[#f0ece4] text-primary font-bold text-[12px] border border-primary/30 transition-all shadow-xs" title="Insert New Comment (⌘⌥M)">
+<span class="material-symbols-outlined text-[16px]">add_comment</span>
+<span>New Comment</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#eaf2ec] text-primary font-bold text-[12px] border border-primary/40 transition-all shadow-xs" title="Reviewing Pane">
+<span class="material-symbols-outlined text-[16px]">side_navigation</span>
+<span>Review Pane</span>
+<span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-primary text-white ml-0.5">4</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded-xl hover:bg-[#f0ece4] text-[#6b6358] hover:text-[#2e3230] transition-colors text-[12px] font-semibold">
+<span class="material-symbols-outlined text-[16px]">compare</span>
+<span class="hidden sm:inline">Compare</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded-xl hover:bg-[#f0ece4] text-[#6b6358] hover:text-[#2e3230] transition-colors text-[12px] font-semibold">
+<span class="material-symbols-outlined text-[16px]">history</span>
+<span class="hidden sm:inline">Version History</span>
+</button>
+</div>
+<div class="flex items-center gap-1.5 ml-4 shrink-0 min-w-max">
+<button class="h-7 px-3 rounded-xl bg-[#eaf2ec] hover:bg-[#dbe9de] text-primary text-[12px] font-bold flex items-center gap-1.5 transition-all border border-primary/25 shadow-xs" title="AI Polish &amp; Rewrite">
+<span class="material-symbols-outlined text-[15px]">magic_button</span>
+<span>AI Polish</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 3. WORKSPACE DESK & REALISTIC PAGINATED DOCUMENT CANVAS -->
+<main class="flex-1 overflow-y-auto overflow-x-auto bg-[#eae6de] py-8 px-4 flex justify-center items-start">
+<div class="flex gap-6 max-w-full items-start justify-center">
+<!-- Paginated Document Sheet: Warm organic paper (#FFFFFF/#FAF9F6) with soft drop-shadow & Terra borders -->
+<div class="w-[816px] min-h-[1056px] bg-[#fbfaf8] text-[#2e3230] shadow-[0_8px_24px_rgba(46,50,48,0.08),0_2px_6px_rgba(46,50,48,0.04)] border border-[#e6e2da] rounded-2xl p-16 sm:p-20 relative transition-all">
+<!-- Watermark/Header Area margin guide line -->
+<div class="border-b border-dashed border-[#e6e2da] pb-2 mb-8 flex justify-between text-[11px] text-[#8b8478]">
+<span>Header: Q3 Strategy Working Draft</span>
+<span class="font-medium">Confidential • Internal Only</span>
+</div>
+<!-- Document Title -->
+<h1 class="text-[28px] font-extrabold text-[#2a4d36] tracking-tight leading-snug mb-3 pb-1 border-b border-[#c4c8bc]">
+          Q3 Brand Positioning &amp; Launch Strategy
+        </h1>
+<!-- Metadata / Authorship -->
+<div class="flex items-center gap-3 text-[12px] text-[#6b6358] mb-8 pb-3 border-b border-[#e6e2da]">
+<span class="font-bold text-[#2e3230]">Sarah K.</span>
+<span>•</span>
+<span>Product Lead</span>
+<span>•</span>
+<span>Last modified 3 mins ago</span>
+<span class="ml-auto inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#eaf2ec] text-primary border border-primary/20 rounded-full text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+            3 active collaborators
+          </span>
+</div>
+<!-- Section 1: Executive Summary -->
+<div class="mb-8">
+<h2 class="text-[19px] font-bold text-[#2a4d36] mb-3">
+            1. Executive Summary &amp; Market Drivers
+          </h2>
+<p class="text-[14px] text-[#3e4240] leading-relaxed mb-4 text-justify">
+            As category boundaries dissolve across modern productivity suites, our growth vector pivots from single-player utility to synchronous workspace density. Market telemetry underscores a deliberate enterprise migration away from siloed tools toward composable real-time canvases.
+          </p>
+<!-- Multiplayer Active Selection & Caret: Sarah K. (Terra Earth tone) -->
+<div class="relative group my-2">
+<p class="text-[14px] text-[#3e4240] leading-relaxed text-justify">
+              Our initial user research demonstrates that the threshold for buyer conversion depends on 
+              <span class="bg-[#f0e8db] text-[#4a4538] px-1.5 py-0.5 rounded-md relative border-b-2 border-tertiary cursor-text" title="Active multiplayer selection by Sarah K.">
+                accelerating enterprise time-to-value across our tier-1 accounts
+                <!-- Sarah K. Caret tag -->
+<span class="absolute -top-5 right-0 bg-tertiary text-white text-[9px] font-bold px-2 py-0.5 rounded-t-md flex items-center gap-1 shadow-xs pointer-events-none">
+<span class="w-1 h-1 rounded-full bg-white animate-pulse"></span>
+                  Sarah K.
+                </span>
+</span> 
+              while simultaneously lowering setup friction. Retention doubles whenever teams launch their first collaborative session within forty-eight hours of onboarding.
+            </p>
+</div>
+</div>
+<!-- Track Changes Revision Markup (Terra Style: Organic Red Strikethrough + Sage Green Underline) -->
+<div class="mb-8 p-3.5 bg-[#f5f1ea] border-l-4 border-primary rounded-r-xl relative group ring-1 ring-primary/20 shadow-xs">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2 text-[11px] text-[#6b6358]">
+<span class="font-bold text-primary">Track Changes:</span>
+<span>Suggested revision by Sarah K. (8m ago)</span>
+<span class="px-2 py-0.2 rounded-full text-[10px] font-bold bg-[#eaf2ec] text-primary border border-primary/25">Change 2 of 4</span>
+</div>
+<!-- Floating mini resolution bar with Accept (✓) and Reject (✕) -->
+<div class="flex items-center gap-1 bg-white border border-[#e6e2da] rounded-xl shadow-xs px-2 py-0.5">
+<button class="flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold text-primary hover:bg-[#eaf2ec] transition-colors" title="Accept Suggestion (✓)">
+<span class="material-symbols-outlined text-[14px]">check</span>
+<span>Accept</span>
+</button>
+<div class="h-3 w-px bg-[#e6e2da]"></div>
+<button class="flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold text-error hover:bg-[#ffdad8]/50 transition-colors" title="Reject Suggestion (✕)">
+<span class="material-symbols-outlined text-[14px]">close</span>
+<span>Reject</span>
+</button>
+</div>
+</div>
+<p class="text-[14px] leading-relaxed text-[#2e3230]">
+            Instead of relying strictly on 
+            <span class="line-through text-error bg-[#ffdad8]/50 px-1.5 py-0.5 rounded-md font-medium" title="Deleted: our legacy direct outbound playbook">our legacy direct outbound playbook</span>, 
+            we will anchor quarterly acquisition in 
+            <span class="underline decoration-primary text-primary bg-[#eaf2ec] font-bold px-1.5 py-0.5 rounded-md" title="Inserted: a customer-led community flywheel">a customer-led community flywheel</span> 
+            supported by verified collaborative project templates.
+          </p>
+</div>
+<!-- Section 2: Deliverables Checklist & Alex M. Caret -->
+<div class="mb-8">
+<h2 class="text-[19px] font-bold text-[#2a4d36] mb-3 flex items-center justify-between">
+<span>2. Q3 Readiness Deliverables</span>
+<span class="text-[12px] font-semibold text-[#74796e]">3 of 5 items completed</span>
+</h2>
+<div class="space-y-2 text-[13px]">
+<label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-[#f0ece4] cursor-pointer transition-colors">
+<input checked="" class="mt-0.5 w-4 h-4 text-primary rounded-md border-[#c4c8bc] focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="line-through text-[#8b8478]">Publish revised Developer API specifications for Live Sync v2 <span class="text-[11px] text-[#9c9689]">(Approved by Infra Leads)</span></span>
+</label>
+<label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-[#f0ece4] cursor-pointer transition-colors">
+<input checked="" class="mt-0.5 w-4 h-4 text-primary rounded-md border-[#c4c8bc] focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="line-through text-[#8b8478]">Finalize interactive pricing calculator for tiered multiplayer seats</span>
+</label>
+<!-- Alex M. live cursor at checkbox item -->
+<div class="relative">
+<label class="flex items-start gap-2.5 p-2 rounded-xl bg-[#f0e8db]/60 border-l-2 border-[#9e6d42] cursor-pointer">
+<input class="mt-0.5 w-4 h-4 text-primary rounded-md border-[#c4c8bc] focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="font-bold text-[#2e3230]">Customer advisory board early review &amp; live feedback clinic</span>
+</label>
+<!-- Caret flag for Alex M. -->
+<div class="absolute -top-3.5 right-4 bg-[#9e6d42] text-white text-[9px] font-bold px-2 py-0.2 rounded-full shadow-xs flex items-center gap-1 pointer-events-none">
+<span class="w-1 h-1 rounded-full bg-white animate-pulse"></span>
+                Alex M.
+              </div>
+</div>
+<label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-[#f0ece4] cursor-pointer transition-colors">
+<input class="mt-0.5 w-4 h-4 text-primary rounded-md border-[#c4c8bc] focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-[#2e3230] font-medium">Deploy telemetry dashboards for team invite velocity tracking</span>
+</label>
+</div>
+</div>
+<!-- Document Footer / Page Number indicator -->
+<div class="mt-16 pt-4 border-t border-dashed border-[#e6e2da] flex justify-between text-[11px] text-[#8b8478]">
+<span>Q3 Brand Positioning &amp; Launch Strategy.docx</span>
+<span class="font-semibold">Page 1 of 4</span>
+</div>
+</div>
+<!-- Terra Right Margin Review & Suggestions Panel -->
+<div class="w-80 shrink-0 hidden xl:flex flex-col gap-3 sticky top-4">
+<div class="bg-[#fbfaf8] rounded-2xl border border-[#e6e2da] shadow-[0_4px_16px_rgba(46,50,48,0.06)] overflow-hidden">
+<!-- Panel Header -->
+<div class="px-4 py-3 bg-[#f5f1ea] border-b border-[#e6e2da] flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[19px] text-primary">rate_review</span>
+<span class="font-extrabold text-[13px] text-[#2e3230]">Review &amp; Suggestions</span>
+<span class="px-2 py-0.2 rounded-full text-[10px] font-bold bg-[#eaf2ec] text-primary border border-primary/25">4</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="w-6 h-6 rounded-lg hover:bg-[#eae6de] text-[#6b6358] flex items-center justify-center transition-colors" title="Filter Suggestions">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+</button>
+<button class="w-6 h-6 rounded-lg hover:bg-[#eae6de] text-[#6b6358] flex items-center justify-center transition-colors" title="Close Panel">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- Suggestion Cards List -->
+<div class="p-3.5 flex flex-col gap-3 max-h-[820px] overflow-y-auto">
+<!-- Change 1: Comment Thread by Sarah K. -->
+<div class="bg-white hover:bg-[#fbfaf8] rounded-xl p-3 border border-[#e6e2da] hover:border-tertiary transition-all relative shadow-xs">
+<div class="absolute -left-1 top-3.5 w-1 h-6 bg-tertiary rounded-r"></div>
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-tertiary text-white font-bold text-[10px] flex items-center justify-center">SK</div>
+<div>
+<span class="font-bold text-[12px] text-[#2e3230] block leading-tight">Sarah K.</span>
+<span class="text-[10px] text-[#787267] block">12m ago</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#f0e8db] text-tertiary border border-tertiary/20">Comment</span>
+</div>
+<div class="bg-[#f5f1ea] p-2 rounded-lg text-[11px] text-[#5e5548] italic mb-2 border-l-2 border-tertiary">
+                “...accelerating enterprise time-to-value...”
+              </div>
+<p class="text-[12px] text-[#2e3230] mb-2.5 leading-snug">
+                Should we include APAC-specific deployment benchmarks here before Thursday’s review?
+              </p>
+<div class="flex items-center gap-1.5 bg-white border border-[#e6e2da] rounded-xl px-2.5 py-1 focus-within:border-primary">
+<input class="bg-transparent text-[11px] w-full focus:outline-none placeholder-[#8b8478]" placeholder="Reply or @mention..." type="text"/>
+<button class="text-primary hover:text-primary-dark">
+<span class="material-symbols-outlined text-[15px]">send</span>
+</button>
+</div>
+</div>
+<!-- Change 2: Tracked Replacement Diff (Selected/Active) in Terra Sage/Green Theme -->
+<div class="bg-white rounded-xl p-3 border-2 border-primary shadow-xs relative">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary text-white font-bold text-[10px] flex items-center justify-center">SK</div>
+<div>
+<span class="font-bold text-[12px] text-[#2e3230] block leading-tight">Sarah K.</span>
+<span class="text-[10px] text-[#787267] block">8m ago</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#eaf2ec] text-primary border border-primary/30">Replacement</span>
+</div>
+<div class="space-y-1 mb-2.5 text-[11px]">
+<div class="flex items-start gap-1.5 bg-[#ffdad8]/50 text-error p-1.5 rounded-lg border border-error/20">
+<span class="material-symbols-outlined text-[13px] mt-0.5 shrink-0">remove</span>
+<span class="line-through">our legacy direct outbound playbook</span>
+</div>
+<div class="flex items-start gap-1.5 bg-[#eaf2ec] text-primary p-1.5 rounded-lg font-bold border border-primary/20">
+<span class="material-symbols-outlined text-[13px] mt-0.5 shrink-0">add</span>
+<span>a customer-led community flywheel</span>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-1 border-t border-[#e6e2da]">
+<button class="flex-1 h-7 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-[11px] flex items-center justify-center gap-1 transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[14px]">check</span>
+<span>Accept</span>
+</button>
+<button class="flex-1 h-7 rounded-xl bg-white hover:bg-[#ffdad8]/40 text-error border border-[#e6e2da] font-bold text-[11px] flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[14px]">close</span>
+<span>Reject</span>
+</button>
+</div>
+</div>
+<!-- Change 3: Alex M. Proposed Scope Edit -->
+<div class="bg-white hover:bg-[#fbfaf8] rounded-xl p-3 border border-[#e6e2da] hover:border-[#9e6d42] transition-all relative shadow-xs">
+<div class="absolute -left-1 top-3.5 w-1 h-6 bg-[#9e6d42] rounded-r"></div>
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-[#9e6d42] text-white font-bold text-[10px] flex items-center justify-center">AM</div>
+<div>
+<span class="font-bold text-[12px] text-[#2e3230] block leading-tight">Alex M.</span>
+<span class="text-[10px] text-[#787267] block">5m ago</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#f0e8db] text-[#9e6d42] border border-[#9e6d42]/20">Checklist Addition</span>
+</div>
+<p class="text-[12px] text-[#2e3230] mb-2 leading-snug">
+                Added customer advisory board early review &amp; live feedback clinic to Q3 Readiness deliverables.
+              </p>
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded-xl bg-white hover:bg-[#eaf2ec] border border-[#e6e2da] text-primary font-bold text-[11px] flex items-center gap-1 transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[13px]">check</span>
+<span>Accept</span>
+</button>
+<button class="px-2.5 py-1 rounded-xl bg-white hover:bg-[#ffdad8]/40 border border-[#e6e2da] text-error font-bold text-[11px] flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[13px]">close</span>
+<span>Reject</span>
+</button>
+</div>
+</div>
+<!-- Change 4: David C. Note on API spec -->
+<div class="bg-white hover:bg-[#fbfaf8] rounded-xl p-3 border border-[#e6e2da] transition-all shadow-xs">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-[#5f7358] text-white font-bold text-[10px] flex items-center justify-center">DC</div>
+<div>
+<span class="font-bold text-[12px] text-[#2e3230] block leading-tight">David C.</span>
+<span class="text-[10px] text-[#787267] block">1m ago</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#eaf2ec] text-[#5f7358] border border-[#5f7358]/20">Resolution</span>
+</div>
+<p class="text-[12px] text-[#2e3230] mb-2 leading-snug">
+                Marked "Publish revised Developer API specifications" as approved by Infra Leads.
+              </p>
+<div class="flex items-center gap-1.5 bg-white border border-[#e6e2da] rounded-xl px-2.5 py-1">
+<input class="bg-transparent text-[11px] w-full focus:outline-none placeholder-[#8b8478]" placeholder="Reply..." type="text"/>
+<button class="text-primary hover:text-primary-dark">
+<span class="material-symbols-outlined text-[14px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- 4. TERRA BOTTOM STATUS BAR -->
+<footer class="h-9 bg-[#fbfaf8] border-t border-[#e6e2da] text-[#6b6358] flex items-center justify-between px-4 text-[12px] select-none shrink-0 z-50 shadow-xs">
+<!-- Left document statistics -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 font-bold text-[#2e3230]">
+<span class="material-symbols-outlined text-[15px] text-[#74796e]">description</span>
+<span>Page 1 of 4</span>
+</div>
+<div class="h-3 w-px bg-[#e6e2da]"></div>
+<span>1,420 words</span>
+<div class="h-3 w-px bg-[#e6e2da]"></div>
+<span>5 min read</span>
+<div class="hidden sm:flex items-center gap-1.5 text-primary font-bold">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+<span class="text-[#6b6358]">All systems synced</span>
+</div>
+</div>
+<!-- Right view modes & zoom -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1 bg-[#f0ece4] px-1 py-0.5 rounded-xl border border-[#e6e2da]">
+<button class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold bg-white text-[#2e3230] shadow-xs">Print</button>
+<button class="px-2.5 py-0.5 rounded-lg text-[11px] font-medium text-[#6b6358] hover:text-[#2e3230]">Pageless</button>
+</div>
+<div class="h-3 w-px bg-[#e6e2da]"></div>
+<div class="flex items-center gap-1 text-[11px] font-bold">
+<button class="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-[#f0ece4] text-[#6b6358] font-bold">-</button>
+<span class="w-9 text-center">100%</span>
+<button class="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-[#f0ece4] text-[#6b6358] font-bold">+</button>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html lang="en" style=""><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..700&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,300..800;1,6..12,300..800&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "tertiary": "#705c30",
+          "on-tertiary-fixed-variant": "#554020",
+          "primary": "#4a7c59",
+          "primary-hover": "#3d6749",
+          "surface-container-highest": "#e4e0d8",
+          "secondary-fixed": "#f0e8db",
+          "on-secondary-container": "#5e5548",
+          "tertiary-fixed": "#f8e0a8",
+          "tertiary-fixed-dim": "#dcc48e",
+          "on-tertiary": "#ffffff",
+          "on-background": "#2e3230",
+          "surface": "#faf6f0",
+          "secondary": "#6b6358",
+          "surface-bright": "#faf6f0",
+          "surface-container": "#f0ece4",
+          "on-primary-container": "#d8f0de",
+          "primary-fixed": "#c8e8d0",
+          "primary-container": "#78a886",
+          "secondary-fixed-dim": "#d4ccbf",
+          "surface-container-low": "#f5f1ea",
+          "on-primary-fixed-variant": "#2a6038",
+          "inverse-surface": "#2e3230",
+          "tertiary-container": "#c4a66a",
+          "inverse-on-surface": "#f5f0e8",
+          "error": "#b83230",
+          "secondary-container": "#f0e8db",
+          "on-primary": "#ffffff",
+          "surface-dim": "#dbd7cf",
+          "on-secondary": "#ffffff",
+          "on-secondary-fixed": "#1e1a13",
+          "on-primary-fixed": "#002110",
+          "inverse-primary": "#8ecf9e",
+          "on-error": "#ffffff",
+          "on-error-container": "#690005",
+          "surface-container-high": "#eae6de",
+          "on-tertiary-fixed": "#221a05",
+          "on-secondary-fixed-variant": "#4a4538",
+          "surface-tint": "#4a7c59",
+          "outline": "#74796e",
+          "surface-container-lowest": "#ffffff",
+          "error-container": "#ffdad8",
+          "background": "#faf6f0",
+          "primary-fixed-dim": "#8ecf9e",
+          "on-tertiary-container": "#554020",
+          "outline-variant": "#e6e2da",
+          "surface-variant": "#e4e0d8",
+          "on-surface-variant": "#4a4e4a",
+          "on-surface": "#2e3230"
+        },
+        borderRadius: {
+          "DEFAULT": "0.75rem",
+          "lg": "0.75rem",
+          "xl": "0.75rem",
+          "2xl": "1rem",
+          "full": "9999px"
+        },
+        fontFamily: {
+          "headline": ["Literata", "serif"],
+          "display": ["Literata", "serif"],
+          "body": ["Nunito Sans", "sans-serif"],
+          "label": ["Nunito Sans", "sans-serif"]
+        }
+      }
+    }
+  }
+</script></head><body class="bg-background font-body text-on-surface antialiased"><div class="flex flex-col h-screen w-screen overflow-hidden bg-[#f4f1ea] text-on-surface font-body select-none text-[13px]">
+<!-- 1. TOP APP BAR / TITLE BAR (Terra Design System) -->
+<header class="h-14 bg-[#fbfaf8] border-b border-outline-variant text-on-surface flex items-center justify-between px-4 shrink-0 z-50 relative">
+<!-- Left: Brand icon, Document Title & Cloud status -->
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center font-bold text-[14px] shadow-sm cursor-pointer hover:bg-primary-hover transition-colors" onclick="toggleTerraModal('modal-doc-file')">
+<span class="material-symbols-outlined text-[18px]">edit_document</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline font-semibold text-[14px] text-on-surface tracking-tight truncate max-w-[260px] md:max-w-md">Q3 Brand Positioning &amp; Launch Strategy</span>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-surface-container text-secondary">v2.4</span>
+<button class="hover:text-primary text-outline transition-colors" onclick="toggleTerraModal('modal-copilot-drawer')" title="Star document">
+<span class="material-symbols-outlined text-[16px]">star</span>
+</button>
+</div>
+<div class="flex items-center gap-1.5 text-[11px] text-secondary">
+<span class="material-symbols-outlined text-[13px] text-primary">cloud_done</span>
+<span class="">Saved to Cloud</span>
+<span class="">•</span>
+<span class="">Last edit 3m ago by Sarah K.</span>
+</div>
+</div>
+</div>
+<!-- Center: Quick omni-search pill -->
+<div class="hidden md:flex items-center max-w-[320px] flex-1 mx-4">
+<div class="w-full flex items-center gap-2 bg-[#f0ece4] hover:bg-surface-container-high text-secondary focus-within:bg-[#fbfaf8] focus-within:text-on-surface focus-within:ring-2 focus-within:ring-primary/25 px-3 py-1.5 rounded-xl border border-transparent focus-within:border-primary transition-all cursor-text">
+<span class="material-symbols-outlined text-[16px]">search</span>
+<input class="bg-transparent text-[12px] w-full focus:outline-none placeholder-secondary/70 font-body" onclick="toggleTerraModal('modal-search-palette')" placeholder="Search or jump to... (⌘K)" type="text"/>
+</div>
+</div>
+<!-- Right: Presence, AI Assistant, Share & Profile -->
+<div class="flex items-center gap-2.5">
+<!-- Multiplayer Collaborator Avatars -->
+<div class="flex items-center -space-x-2 mr-1">
+<div class="w-7 h-7 rounded-full bg-[#78a886] border-2 border-[#fbfaf8] flex items-center justify-center text-white text-[10px] font-bold shadow-xs ring-2 ring-primary/20" title="Sarah K. (Editing paragraph 2)">SK</div>
+<div class="w-7 h-7 rounded-full bg-[#c4a66a] border-2 border-[#fbfaf8] flex items-center justify-center text-white text-[10px] font-bold shadow-xs ring-2 ring-tertiary-container/30" title="Alex M. (Reviewing tasks)">AM</div>
+<div class="w-7 h-7 rounded-full bg-secondary border-2 border-[#fbfaf8] flex items-center justify-center text-white text-[10px] font-bold shadow-xs" title="David C.">DC</div>
+</div>
+<!-- Comments badge toggle -->
+<button class="h-8 px-2.5 rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface flex items-center gap-1.5 text-[12px] font-medium transition-colors relative" onclick="toggleTerraModal('modal-copilot-drawer')" title="Comments">
+<span class="material-symbols-outlined text-[17px]">mode_comment</span>
+<span class="hidden lg:inline font-semibold">3</span>
+</button>
+<!-- Copilot AI Action -->
+<button class="h-8 px-3 rounded-xl bg-[#eaf2ec] hover:bg-[#dce8df] text-primary border border-primary/20 font-semibold text-[12px] flex items-center gap-1.5 transition-all shadow-xs group" onclick="toggleTerraModal('modal-copilot-drawer')">
+<span class="material-symbols-outlined text-[16px] text-primary group-hover:scale-110 transition-transform">auto_awesome</span>
+<span class="hidden sm:inline">Ask Copilot</span>
+</button>
+<!-- Primary Share Button -->
+<button class="h-8 px-3.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold text-[12px] flex items-center gap-1.5 shadow-sm transition-colors" onclick="toggleTerraModal('modal-share-dialog')">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+<span class="">Share</span>
+</button>
+<!-- User Profile Avatar -->
+<div class="w-8 h-8 rounded-full bg-tertiary text-white font-bold text-[11px] flex items-center justify-center shadow-xs cursor-pointer hover:ring-2 hover:ring-primary/40 transition-all" onclick="toggleTerraModal('modal-account-popover')">
+      ME
+    </div>
+</div>
+</header>
+<!-- 2. FULL WORD RIBBON - TERRA THEMED -->
+<div class="bg-[#fbfaf8] border-b border-outline-variant shrink-0 z-40 select-none">
+<div class="flex items-center justify-between px-4 border-b border-outline-variant bg-[#f5f1ea] text-[13px]">
+<div class="flex items-center gap-1 -mb-px">
+<button class="flex items-center gap-1.5 px-3 py-2 text-[12px] font-semibold text-primary border-b-2 border-primary bg-[#fbfaf8] transition-colors rounded-t-xl"><span class="material-symbols-outlined text-[15px]">edit_note</span><span class="">Home</span></button>
+<button class="flex items-center gap-1.5 px-3 py-2 text-[12px] font-medium text-secondary hover:text-on-surface hover:bg-[#fbfaf8]/70 transition-colors border-b-2 border-transparent rounded-t-xl"><span class="material-symbols-outlined text-[15px]">add_circle</span><span class="">Insert</span></button>
+<button class="flex items-center gap-1.5 px-3 py-2 text-[12px] font-medium text-secondary hover:text-on-surface hover:bg-[#fbfaf8]/70 transition-colors border-b-2 border-transparent rounded-t-xl relative"><span class="material-symbols-outlined text-[15px]">rate_review</span><span class="">Review &amp; Changes</span><span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#eaf2ec] text-primary ml-1">4</span></button>
+<button class="flex items-center gap-1.5 px-3 py-2 text-[12px] font-medium text-secondary hover:text-on-surface hover:bg-[#fbfaf8]/70 transition-colors border-b-2 border-transparent rounded-t-xl"><span class="material-symbols-outlined text-[15px]">dashboard_customize</span><span class="">Layout &amp; Tools</span></button>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 text-[11px] font-semibold text-primary bg-[#fbfaf8] px-2.5 py-1 rounded-full border border-outline-variant"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="">Track Changes ON</span></div>
+<div class="h-3 w-px bg-outline-variant"></div>
+<button class="h-6 px-2 rounded-lg hover:bg-[#fbfaf8] text-[11px] font-medium text-secondary hover:text-on-surface flex items-center gap-1 transition-colors"><span class="material-symbols-outlined text-[14px]">keyboard_command_key</span><span class="">Shortcuts</span></button>
+</div>
+</div>
+<div class="px-3 py-1.5 flex items-center justify-between overflow-x-auto gap-2 text-[13px] bg-[#fbfaf8]">
+<div class="flex items-center gap-1 min-w-max">
+<div class="flex items-center gap-0.5" title="History &amp; Clipboard">
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-colors" title="Undo (⌘Z)"><span class="material-symbols-outlined text-[17px]">undo</span></button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-colors" title="Redo (⌘Y)"><span class="material-symbols-outlined text-[17px]">redo</span></button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-colors" title="Format Painter"><span class="material-symbols-outlined text-[17px]">imagesearch_roller</span></button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-error transition-colors" title="Clear formatting"><span class="material-symbols-outlined text-[17px]">format_clear</span></button>
+</div>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<div class="flex items-center gap-1" title="Typography">
+<div class="flex items-center gap-1.5 px-2 py-1 rounded-xl hover:bg-surface-container cursor-pointer text-on-surface font-semibold border border-transparent hover:border-outline-variant transition-all" title="Paragraph Style"><span class="material-symbols-outlined text-[16px] text-secondary">title</span><span class="text-[12px] font-headline">Heading 2</span><span class="material-symbols-outlined text-[14px] text-secondary">expand_more</span></div>
+<div class="flex items-center gap-1 px-2 py-1 rounded-xl hover:bg-surface-container cursor-pointer text-on-surface-variant border border-transparent hover:border-outline-variant transition-all" title="Font Family"><span class="text-[12px]">Nunito Sans</span><span class="material-symbols-outlined text-[14px] text-secondary">expand_more</span></div>
+<div class="flex items-center bg-surface-container rounded-xl px-1 py-0.5">
+<button class="w-5 h-5 flex items-center justify-center text-secondary hover:text-on-surface rounded-lg hover:bg-white text-[12px] font-bold" title="Decrease font size">-</button>
+<span class="w-6 text-center text-[12px] font-semibold text-on-surface">16</span>
+<button class="w-5 h-5 flex items-center justify-center text-secondary hover:text-on-surface rounded-lg hover:bg-white text-[12px] font-bold" title="Increase font size">+</button>
+</div>
+</div>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<div class="flex items-center gap-0.5" title="Font Styling">
+<button class="w-7 h-7 flex items-center justify-center rounded-xl bg-[#eaf2ec] text-primary font-bold shadow-xs border border-primary/20" title="Bold (⌘B)">B</button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface italic font-headline" title="Italic (⌘I)">I</button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface underline" title="Underline (⌘U)">U</button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface line-through" title="Strikethrough">S</button>
+<button class="w-7 h-7 flex flex-col items-center justify-center rounded-xl hover:bg-surface-container text-on-surface" title="Text Color"><span class="font-bold text-[12px] leading-tight text-tertiary">A</span><span class="w-4 h-1 bg-tertiary rounded-full mt-0.5"></span></button>
+<button class="w-7 h-7 flex flex-col items-center justify-center rounded-xl hover:bg-surface-container text-on-surface" title="Highlight Color"><span class="material-symbols-outlined text-[15px] text-tertiary-container">ink_highlighter</span><span class="w-4 h-1 bg-tertiary-fixed rounded-full mt-0.5"></span></button>
+</div>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<div class="flex items-center gap-0.5" title="Alignment &amp; Spacing">
+<button class="w-7 h-7 flex items-center justify-center rounded-xl bg-surface-container text-on-surface" title="Align Left"><span class="material-symbols-outlined text-[16px]">format_align_left</span></button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface" title="Align Center"><span class="material-symbols-outlined text-[16px]">format_align_center</span></button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface" title="Align Right"><span class="material-symbols-outlined text-[16px]">format_align_right</span></button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface" title="Justify"><span class="material-symbols-outlined text-[16px]">format_align_justify</span></button>
+<div class="flex items-center gap-0.5 px-1 py-0.5 rounded-xl hover:bg-surface-container cursor-pointer text-secondary hover:text-on-surface" title="Line Spacing"><span class="material-symbols-outlined text-[16px]">format_line_spacing</span><span class="text-[11px] font-medium">1.15</span><span class="material-symbols-outlined text-[12px] text-secondary">expand_more</span></div>
+</div>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<div class="flex items-center gap-0.5" title="Lists &amp; Indents">
+<div class="flex items-center rounded-xl hover:bg-surface-container cursor-pointer"><button class="w-6 h-7 flex items-center justify-center text-secondary hover:text-on-surface" title="Bulleted list"><span class="material-symbols-outlined text-[16px]">format_list_bulleted</span></button><span class="material-symbols-outlined text-[12px] text-secondary pr-1">expand_more</span></div>
+<div class="flex items-center rounded-xl hover:bg-surface-container cursor-pointer"><button class="w-6 h-7 flex items-center justify-center text-secondary hover:text-on-surface" title="Numbered list"><span class="material-symbols-outlined text-[16px]">format_list_numbered</span></button><span class="material-symbols-outlined text-[12px] text-secondary pr-1">expand_more</span></div>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface" title="Checklist"><span class="material-symbols-outlined text-[16px]">checklist</span></button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface" title="Decrease indent"><span class="material-symbols-outlined text-[16px]">format_indent_decrease</span></button>
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface" title="Increase indent"><span class="material-symbols-outlined text-[16px]">format_indent_increase</span></button>
+</div>
+</div>
+<div class="flex items-center gap-1.5 ml-4 shrink-0 min-w-max">
+<button class="w-7 h-7 flex items-center justify-center rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-colors" title="Insert Link (⌘K)"><span class="material-symbols-outlined text-[16px]">link</span></button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded-xl hover:bg-surface-container text-secondary hover:text-on-surface transition-colors" title="Add Comment (⌘⌥M)"><span class="material-symbols-outlined text-[16px]">add_comment</span><span class="text-[11px] font-medium hidden sm:inline">Comment</span></button>
+<div class="h-4 w-px bg-outline-variant mx-0.5"></div>
+<button class="h-7 px-3 rounded-xl bg-[#eaf2ec] hover:bg-[#dce8df] text-primary text-[12px] font-semibold flex items-center gap-1 transition-all border border-primary/20 shadow-xs" title="AI Polish &amp; Rewrite"><span class="material-symbols-outlined text-[15px]">magic_button</span><span>AI Polish</span></button>
+</div>
+</div>
+</div>
+<!-- 3. WORKSPACE DESK & REALISTIC PAGINATED DOCUMENT CANVAS -->
+<main class="flex-1 overflow-y-auto overflow-x-auto bg-[#ede8e0] py-8 px-4 flex justify-center items-start">
+<div class="flex gap-6 max-w-full items-start justify-center">
+<!-- Paginated Document Sheet: Classic 8.5" x 11" proportions with Terra organic warmth -->
+<div class="w-[816px] min-h-[1056px] bg-[#ffffff] text-on-surface shadow-[0_6px_20px_rgba(74,124,89,0.08),0_2px_6px_rgba(46,50,48,0.06)] border border-outline-variant rounded-xl p-16 sm:p-20 relative transition-all font-body">
+<!-- Watermark/Header Area margin guide line -->
+<div class="border-b border-dashed border-outline-variant pb-2 mb-8 flex justify-between text-[11px] text-secondary">
+<span class="font-headline tracking-wide">Header: Q3 Strategy Working Draft</span>
+<span class="">Confidential • Internal Only</span>
+</div>
+<!-- Document Title -->
+<h1 class="font-headline text-[30px] font-bold text-primary tracking-tight leading-snug mb-3 pb-1 border-b border-primary/20">
+          Q3 Brand Positioning &amp; Launch Strategy
+        </h1>
+<!-- Metadata / Authorship -->
+<div class="flex items-center gap-3 text-[12px] text-secondary mb-8 pb-3 border-b border-outline-variant">
+<span class="font-bold text-on-surface">Sarah K.</span>
+<span class="">•</span>
+<span class="">Product Lead</span>
+<span class="">•</span>
+<span class="">Last modified 3 mins ago</span>
+<span class="ml-auto inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#eaf2ec] text-primary rounded-full text-[11px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+            3 active collaborators
+          </span>
+</div>
+<!-- Section 1: Executive Summary -->
+<div class="mb-8">
+<h2 class="font-headline text-[20px] font-bold text-primary mb-3">
+            1. Executive Summary &amp; Market Drivers
+          </h2>
+<p class="text-[14px] text-on-surface leading-relaxed mb-4 text-justify">
+            As category boundaries dissolve across modern productivity suites, our growth vector pivots from single-player utility to synchronous workspace density. Market telemetry underscores a deliberate enterprise migration away from siloed tools toward composable real-time canvases.
+          </p>
+<!-- Multiplayer Active Selection & Caret: Sarah K. (Sage/Earthy Green) -->
+<div class="relative group my-2">
+<p class="text-[14px] text-on-surface leading-relaxed text-justify">
+              Our initial user research demonstrates that the threshold for buyer conversion depends on 
+              <span class="bg-[#d8f0de] text-[#1e4a2c] px-1 py-0.5 rounded relative border-b-2 border-primary cursor-text" title="Active multiplayer selection by Sarah K.">
+                accelerating enterprise time-to-value across our tier-1 accounts
+                <!-- Sarah K. Caret tag -->
+<span class="absolute -top-5 right-0 bg-primary text-white text-[9px] font-bold px-2 py-0.5 rounded-t-md flex items-center gap-1 shadow-xs pointer-events-none">
+<span class="w-1 h-1 rounded-full bg-white animate-pulse"></span>
+                  Sarah K.
+                </span>
+</span> 
+              while simultaneously lowering setup friction. Retention doubles whenever teams launch their first collaborative session within forty-eight hours of onboarding.
+            </p>
+</div>
+</div>
+<!-- Track Changes Revision Markup (Terra Style: Earthy red strikethrough + forest green underline insertion) -->
+<div class="mb-8 p-3.5 bg-[#fbfaf8] border-l-4 border-primary rounded-r-xl border-y border-r border-outline-variant">
+<div class="flex items-center gap-2 mb-1.5 text-[11px] text-secondary">
+<span class="font-bold text-primary">Track Changes:</span>
+<span class="">Suggested revision by Sarah K. (8m ago)</span>
+</div>
+<p class="text-[14px] leading-relaxed text-on-surface">
+            Instead of relying strictly on 
+            <span class="line-through text-error bg-error-container/60 px-1 py-0.5 rounded" title="Deleted by Sarah K.">our legacy direct outbound playbook</span>, 
+            we will anchor quarterly acquisition in 
+            <span class="underline text-primary bg-[#eaf2ec] font-semibold px-1 py-0.5 rounded" title="Inserted by Sarah K.">a customer-led community flywheel</span> 
+            supported by verified collaborative project templates.
+          </p>
+</div>
+<!-- Section 2: Deliverables Checklist & Alex M. Caret -->
+<div class="mb-8">
+<h2 class="font-headline text-[20px] font-bold text-primary mb-3 flex items-center justify-between">
+<span class="">2. Q3 Readiness Deliverables</span>
+<span class="text-[12px] font-normal text-secondary font-body">3 of 5 items completed</span>
+</h2>
+<div class="space-y-2.5 text-[13px]">
+<label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-surface-container-low cursor-pointer transition-colors">
+<input checked="" class="mt-0.5 w-4 h-4 text-primary rounded border-outline-variant focus:ring-0 accent-primary" type="checkbox"/>
+<span class="line-through text-secondary">Publish revised Developer API specifications for Live Sync v2 <span class="text-[11px] text-outline">(Approved by Infra Leads)</span></span>
+</label>
+<label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-surface-container-low cursor-pointer transition-colors">
+<input checked="" class="mt-0.5 w-4 h-4 text-primary rounded border-outline-variant focus:ring-0 accent-primary" type="checkbox"/>
+<span class="line-through text-secondary">Finalize interactive pricing calculator for tiered multiplayer seats</span>
+</label>
+<!-- Alex M. live cursor at checkbox item -->
+<div class="relative">
+<label class="flex items-start gap-2.5 p-2 rounded-xl bg-tertiary-fixed/30 border-l-3 border-tertiary-container cursor-pointer">
+<input class="mt-0.5 w-4 h-4 text-primary rounded border-outline-variant focus:ring-0 accent-primary" type="checkbox"/>
+<span class="font-medium text-on-surface">Customer advisory board early review &amp; live feedback clinic</span>
+</label>
+<!-- Caret flag for Alex M. -->
+<div class="absolute -top-3.5 right-4 bg-tertiary text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1 pointer-events-none">
+<span class="w-1 h-1 rounded-full bg-white animate-pulse"></span>
+                Alex M.
+              </div>
+</div>
+<label class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-surface-container-low cursor-pointer transition-colors">
+<input class="mt-0.5 w-4 h-4 text-primary rounded border-outline-variant focus:ring-0 accent-primary" type="checkbox"/>
+<span class="text-on-surface">Deploy telemetry dashboards for team invite velocity tracking</span>
+</label>
+</div>
+</div>
+<!-- Document Footer / Page Number indicator -->
+<div class="mt-16 pt-4 border-t border-dashed border-outline-variant flex justify-between text-[11px] text-secondary">
+<span class="">Q3 Brand Positioning &amp; Launch Strategy.docx</span>
+<span class="">Page 1 of 4</span>
+</div>
+</div>
+<!-- Terra Right Margin Comment Callout Card -->
+<div class="w-72 shrink-0 hidden xl:flex flex-col gap-3 sticky top-4">
+<div class="bg-[#fbfaf8] rounded-xl p-3.5 border border-outline-variant shadow-[0_4px_12px_rgba(74,124,89,0.08)] relative">
+<!-- Comment connector indicator line -->
+<div class="absolute -left-3 top-4 w-3 h-0.5 bg-primary"></div>
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary text-white font-bold text-[10px] flex items-center justify-center">SK</div>
+<div>
+<span class="font-bold text-[12px] text-on-surface block leading-tight">Sarah K.</span>
+<span class="text-[10px] text-secondary block">12m ago</span>
+</div>
+</div>
+<div class="flex items-center gap-0.5">
+<button class="w-6 h-6 rounded-lg hover:bg-surface-container text-secondary hover:text-primary flex items-center justify-center transition-colors" title="Resolve Thread">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</button>
+<button class="w-6 h-6 rounded-lg hover:bg-surface-container text-secondary flex items-center justify-center transition-colors" title="More Options">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-container p-2 rounded-lg text-[11px] text-on-surface-variant italic mb-2 border-l-2 border-primary">
+            “...accelerating enterprise time-to-value...”
+          </div>
+<p class="text-[12px] text-on-surface mb-3 leading-snug">
+            Should we include APAC-specific deployment benchmarks here before Thursday’s review?
+          </p>
+<!-- Reply input in Terra style -->
+<div class="flex items-center gap-1.5 bg-[#ffffff] border border-outline-variant rounded-xl px-2.5 py-1.5 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+<input class="bg-transparent text-[11px] w-full focus:outline-none placeholder-secondary font-body" placeholder="Reply or @mention..." type="text"/>
+<button class="text-primary hover:text-primary-hover flex items-center">
+<span class="material-symbols-outlined text-[15px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- 4. BOTTOM STATUS BAR (Terra Style) -->
+<footer class="h-9 bg-[#fbfaf8] border-t border-outline-variant text-secondary flex items-center justify-between px-4 text-[12px] select-none shrink-0 z-50">
+<!-- Left document statistics -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 font-semibold text-on-surface">
+<span class="material-symbols-outlined text-[15px] text-secondary">description</span>
+<span class="">Page 1 of 4</span>
+</div>
+<div class="h-3 w-px bg-outline-variant"></div>
+<span class="">1,420 words</span>
+<div class="h-3 w-px bg-outline-variant"></div>
+<span class="">5 min read</span>
+<div class="hidden sm:flex items-center gap-1.5 text-primary font-semibold">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+<span class="text-secondary">All systems synced</span>
+</div>
+</div>
+<!-- Right view modes & zoom -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1 bg-surface-container px-1 py-0.5 rounded-xl">
+<button class="px-2.5 py-0.5 rounded-lg text-[11px] font-semibold bg-white text-on-surface shadow-xs">Print</button>
+<button class="px-2.5 py-0.5 rounded-lg text-[11px] font-medium text-secondary hover:text-on-surface transition-colors">Pageless</button>
+</div>
+<div class="h-3 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-1 text-[11px] font-medium">
+<button class="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-surface-container text-secondary font-bold">-</button>
+<span class="w-9 text-center font-semibold text-on-surface">100%</span>
+<button class="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-surface-container text-secondary font-bold">+</button>
+</div>
+</div>
+</footer>
+</div>
+<div class="relative z-50" id="terra-modals-system"><div class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-[#2e3230]/90 backdrop-blur-md text-white px-3 py-2 rounded-2xl shadow-xl border border-white/10 flex items-center gap-1.5 text-[12px] font-medium"><span class="text-[#8ecf9e] font-semibold text-[11px] px-2 py-0.5 rounded-full bg-white/10 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">layers</span>Modal Previews:</span><button class="px-2.5 py-1 rounded-xl hover:bg-white/15 transition-all text-white/90 active:scale-95 flex items-center gap-1" onclick="toggleTerraModal('modal-doc-file')"><span class="material-symbols-outlined text-[14px]">folder_open</span>1. File/App Menu</button><button class="px-2.5 py-1 rounded-xl hover:bg-white/15 transition-all text-white/90 active:scale-95 flex items-center gap-1" onclick="toggleTerraModal('modal-search-palette')"><span class="material-symbols-outlined text-[14px]">search</span>2. Search / Jump To</button><button class="px-2.5 py-1 rounded-xl hover:bg-white/15 transition-all text-white/90 active:scale-95 flex items-center gap-1" onclick="toggleTerraModal('modal-copilot-drawer')"><span class="material-symbols-outlined text-[14px]">auto_awesome</span>3. Copilot AI</button><button class="px-2.5 py-1 rounded-xl hover:bg-white/15 transition-all text-white/90 active:scale-95 flex items-center gap-1 bg-[#4a7c59] text-white font-semibold shadow-xs active:scale-95" onclick="toggleTerraModal('modal-share-dialog')"><span class="material-symbols-outlined text-[14px]">share</span>4. Share Modal</button><button class="px-2.5 py-1 rounded-xl hover:bg-white/15 transition-all text-white/90 active:scale-95 flex items-center gap-1" onclick="toggleTerraModal('modal-account-popover')"><span class="material-symbols-outlined text-[14px]">account_circle</span>5. Account Controls</button></div><div class="terra-modal hidden fixed top-14 left-4 z-50 w-80 bg-[#fbfaf8] border border-outline-variant shadow-[0_12px_36px_rgba(46,50,48,0.16)] rounded-2xl p-4 animate-in fade-in zoom-in-95" id="modal-doc-file"><div class="flex items-center justify-between pb-3 border-b border-outline-variant"><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-primary text-white flex items-center justify-center font-bold text-[16px] shadow-xs"><span class="material-symbols-outlined text-[20px]">description</span></div><div><h3 class="font-headline font-semibold text-[13px] text-on-surface leading-tight">Terra Document</h3><span class="text-[11px] text-secondary">Cloud Drive • Strategy • v2.4</span></div></div><button class="w-6 h-6 rounded-lg hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" onclick="closeAllTerraModals()"><span class="material-symbols-outlined text-[16px]">close</span></button></div><div class="py-2.5 border-b border-outline-variant space-y-1.5 text-[11px] text-secondary"><div class="flex justify-between items-center"><span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-primary">folder</span>Location</span><span class="font-semibold text-on-surface">Terra / Q3 Campaigns</span></div><div class="flex justify-between items-center"><span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-primary">history</span>Version History</span><span class="font-semibold text-primary cursor-pointer hover:underline">Browse 18 revisions</span></div><div class="flex justify-between items-center"><span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-primary">analytics</span>Document Stats</span><span class="text-on-surface">1,420 words • 4 pages</span></div></div><div class="pt-2.5 pb-1 space-y-0.5 text-[12px]"><button class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-on-surface text-left transition-colors"><span class="material-symbols-outlined text-[16px] text-secondary">note_add</span><span class="flex-1">New Document from Template</span><span class="text-[10px] text-secondary">⌥N</span></button><button class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-on-surface text-left transition-colors"><span class="material-symbols-outlined text-[16px] text-secondary">content_copy</span><span class="flex-1">Make a Copy</span></button><button class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-on-surface text-left transition-colors"><span class="material-symbols-outlined text-[16px] text-secondary">drive_file_move</span><span class="flex-1">Move to Workspace...</span></button><button class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-on-surface text-left transition-colors"><span class="material-symbols-outlined text-[16px] text-secondary">download</span><span class="flex-1">Export As...</span><span class="text-[10px] px-1.5 py-0.5 bg-surface-container rounded text-secondary font-medium">PDF, DOCX</span></button><div class="my-1.5 border-t border-outline-variant"></div><button class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-on-surface text-left transition-colors"><span class="material-symbols-outlined text-[16px] text-secondary">settings</span><span class="flex-1">Page Setup &amp; Margins</span></button><button class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl hover:bg-error-container/40 text-error text-left transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span><span class="flex-1">Move to Trash</span></button></div></div><div class="terra-modal hidden fixed top-14 left-1/2 -translate-x-1/2 z-50 w-[540px] max-w-[92vw] bg-[#fbfaf8] border border-outline-variant shadow-[0_16px_48px_rgba(46,50,48,0.18)] rounded-2xl overflow-hidden animate-in fade-in" id="modal-search-palette"><div class="p-3.5 border-b border-outline-variant flex items-center gap-2.5 bg-[#f5f1ea]/60"><span class="material-symbols-outlined text-[18px] text-primary">search</span><input class="bg-transparent text-[13px] text-on-surface w-full focus:outline-none placeholder-secondary font-body font-medium" placeholder="Search headings, files, actions, or collaborators..." type="text" value="Executive"/><span class="text-[10px] bg-white border border-outline-variant px-1.5 py-0.5 rounded text-secondary font-semibold">ESC</span></div><div class="p-2 max-h-[380px] overflow-y-auto space-y-3"><div class="space-y-1"><div class="px-2.5 pt-1 text-[10px] font-bold text-secondary uppercase tracking-wider">Jump to Document Headings</div><div class="flex items-center justify-between px-2.5 py-2 rounded-xl bg-[#eaf2ec] text-[#1e4a2c] cursor-pointer hover:bg-[#dce8df] transition-colors"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[16px] text-primary">title</span><div class="text-[12px] font-semibold">1. Executive Summary &amp; Market Drivers<div class="text-[10px] font-normal text-secondary">Page 1 • Active selection by Sarah K.</div></div></div><span class="text-[11px] font-semibold bg-white px-1.5 py-0.5 rounded shadow-xs text-primary">↵ Jump</span></div><div class="flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-on-surface cursor-pointer"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[16px] text-secondary">checklist</span><div class="text-[12px] font-medium">2. Q3 Readiness Deliverables<div class="text-[10px] text-secondary">Page 1 • 3 of 5 items completed</div></div></div></div></div><div class="space-y-1"><div class="px-2.5 pt-1 text-[10px] font-bold text-secondary uppercase tracking-wider">Recent Workspaces &amp; Documents</div><div class="flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-on-surface cursor-pointer"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[16px] text-secondary">description</span><div class="text-[12px] font-medium">Q2 Enterprise Product Retrospective<div class="text-[10px] text-secondary">Edited yesterday by Alex M.</div></div></div><span class="text-[10px] text-secondary">Marketing</span></div><div class="flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-on-surface cursor-pointer"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[16px] text-secondary">style</span><div class="text-[12px] font-medium">Terra Design Guidelines &amp; Tokens v3<div class="text-[10px] text-secondary">Shared with Terra Team</div></div></div><span class="text-[10px] text-secondary">Design System</span></div></div><div class="space-y-1"><div class="px-2.5 pt-1 text-[10px] font-bold text-secondary uppercase tracking-wider">Quick Actions &amp; Commands</div><div class="flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-on-surface cursor-pointer"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[16px] text-primary">toggle_on</span><span class="text-[12px] font-medium">Toggle Track Changes (Currently ON)</span></div><span class="text-[10px] text-secondary">⌘⇧T</span></div><div class="flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-surface-container text-on-surface cursor-pointer"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[16px] text-primary">picture_as_pdf</span><span class="text-[12px] font-medium">Export as Paginated PDF</span></div><span class="text-[10px] text-secondary">⌘P</span></div></div></div><div class="p-2.5 bg-[#f5f1ea] border-t border-outline-variant flex items-center justify-between text-[11px] text-secondary"><div class="flex items-center gap-3"><span>Use <kbd class="bg-white px-1 py-0.5 rounded border border-outline-variant text-[10px]">↑</kbd><kbd class="bg-white px-1 py-0.5 rounded border border-outline-variant text-[10px]">↓</kbd> to navigate</span><span><kbd class="bg-white px-1 py-0.5 rounded border border-outline-variant text-[10px]">↵</kbd> to select</span></div><button class="text-primary hover:underline font-semibold" onclick="closeAllTerraModals()">Close</button></div></div><div class="terra-modal hidden fixed top-16 right-6 z-50 w-96 max-w-[95vw] bg-[#fbfaf8] border border-outline-variant shadow-[0_16px_40px_rgba(74,124,89,0.15)] rounded-2xl overflow-hidden animate-in fade-in" id="modal-copilot-drawer"><div class="p-3.5 bg-gradient-to-r from-[#eaf2ec] to-[#fbfaf8] border-b border-primary/20 flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-7 h-7 rounded-xl bg-primary text-white flex items-center justify-center"><span class="material-symbols-outlined text-[17px]">auto_awesome</span></div><div><h3 class="font-headline font-semibold text-[13px] text-primary leading-tight">Terra Copilot</h3><div class="flex items-center gap-1 text-[10px] text-secondary"><span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span><span>Context: Section 1 (Executive Summary)</span></div></div></div><button class="w-6 h-6 rounded-lg hover:bg-white/80 flex items-center justify-center text-secondary hover:text-on-surface" onclick="closeAllTerraModals()"><span class="material-symbols-outlined text-[16px]">close</span></button></div><div class="p-3.5 space-y-3 text-[12px]"><div class="space-y-1.5"><div class="text-[11px] font-semibold text-secondary">Suggested Actions for Selection:</div><div class="flex flex-wrap gap-1.5"><button class="px-2.5 py-1 rounded-xl bg-surface-container hover:bg-[#eaf2ec] hover:text-primary transition-all text-[11px] font-medium text-on-surface border border-transparent hover:border-primary/20">✨ Summarize market drivers</button><button class="px-2.5 py-1 rounded-xl bg-surface-container hover:bg-[#eaf2ec] hover:text-primary transition-all text-[11px] font-medium text-on-surface border border-transparent hover:border-primary/20">🎯 Draft executive takeaways</button><button class="px-2.5 py-1 rounded-xl bg-surface-container hover:bg-[#eaf2ec] hover:text-primary transition-all text-[11px] font-medium text-on-surface border border-transparent hover:border-primary/20">🌿 Match Terra brand voice</button></div></div><div class="p-3 bg-white border border-primary/20 rounded-xl space-y-2 shadow-xs"><div class="flex items-center justify-between text-[11px]"><span class="font-semibold text-primary flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">magic_button</span>Proposed Executive Polish:</span><span class="text-[10px] text-secondary">Confidence 98%</span></div><p class="text-[12px] leading-relaxed text-on-surface italic bg-[#faf6f0] p-2 rounded-lg border-l-2 border-primary">“Enterprise migration toward synchronous workspaces accelerates time-to-value by 40% when collaborative customer flywheels replace legacy outbound outreach.”</p><div class="flex items-center gap-1.5 pt-1"><button class="px-2.5 py-1 rounded-lg bg-primary hover:bg-primary-hover text-white text-[11px] font-semibold shadow-xs transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">check</span>Replace Selection</button><button class="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-[11px] font-medium transition-colors">Insert Below</button><button class="p-1 rounded-lg hover:bg-surface-container text-secondary" title="Copy response"><span class="material-symbols-outlined text-[14px]">content_copy</span></button></div></div><div class="pt-1"><div class="flex items-center gap-1.5 bg-white border border-outline-variant rounded-xl p-2 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all"><input class="bg-transparent text-[12px] w-full focus:outline-none placeholder-secondary font-body" placeholder="Ask Copilot to write, edit, summarize..." type="text"/><button class="w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center shrink-0 hover:bg-primary-hover transition-colors"><span class="material-symbols-outlined text-[15px]">arrow_upward</span></button></div></div></div></div><div class="terra-modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in" id="modal-share-dialog"><div class="w-full max-w-[500px] bg-[#fbfaf8] border border-outline-variant shadow-[0_24px_56px_rgba(46,50,48,0.2)] rounded-2xl overflow-hidden"><div class="p-4 border-b border-outline-variant flex items-center justify-between bg-[#f5f1ea]/60"><div><h2 class="font-headline font-semibold text-[15px] text-on-surface leading-tight">Share “Q3 Brand Positioning &amp; Launch Strategy”</h2><div class="text-[11px] text-secondary mt-0.5">Terra Workspace • Cloud Document</div></div><button class="w-7 h-7 rounded-xl hover:bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface" onclick="closeAllTerraModals()"><span class="material-symbols-outlined text-[18px]">close</span></button></div><div class="p-4 space-y-4 text-[13px]"><div class="flex items-center gap-2"><div class="flex-1 flex items-center gap-2 bg-white border border-outline-variant rounded-xl px-3 py-1.5 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all"><span class="material-symbols-outlined text-[16px] text-secondary">person_add</span><input class="w-full bg-transparent text-[12px] focus:outline-none placeholder-secondary font-body" placeholder="Add people, groups or emails..." type="text"/></div><select class="bg-surface-container border border-outline-variant rounded-xl px-2.5 py-1.5 text-[12px] font-semibold text-on-surface focus:outline-none"><option>Can edit</option><option>Can comment</option><option>Can view</option></select><button class="px-3.5 py-1.5 bg-primary hover:bg-primary-hover text-white font-semibold rounded-xl text-[12px] shadow-xs transition-colors">Invite</button></div><div><div class="text-[11px] font-bold text-secondary uppercase tracking-wider mb-2">People with access</div><div class="space-y-2"><div class="flex items-center justify-between p-1.5 rounded-xl hover:bg-surface-container"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-tertiary text-white font-bold text-[11px] flex items-center justify-center shadow-xs">ME</div><div><div class="font-semibold text-[12px] text-on-surface">Sarah Jenkins <span class="text-[10px] text-secondary font-normal">(You)</span></div><div class="text-[11px] text-secondary">sarah@terra.design</div></div></div><span class="text-[11px] font-semibold text-secondary px-2 py-0.5 bg-surface-container rounded-lg">Owner</span></div><div class="flex items-center justify-between p-1.5 rounded-xl hover:bg-surface-container"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-[#78a886] text-white font-bold text-[11px] flex items-center justify-center shadow-xs">SK</div><div><div class="font-semibold text-[12px] text-on-surface">Sarah K.</div><div class="text-[11px] text-secondary">Product Lead</div></div></div><select class="bg-transparent hover:bg-white text-[11px] font-semibold text-on-surface border border-transparent hover:border-outline-variant rounded-lg px-2 py-1"><option>Can edit</option><option>Can comment</option><option>Can view</option><option class="text-error">Remove</option></select></div><div class="flex items-center justify-between p-1.5 rounded-xl hover:bg-surface-container"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-[#c4a66a] text-white font-bold text-[11px] flex items-center justify-center shadow-xs">AM</div><div><div class="font-semibold text-[12px] text-on-surface">Alex M.</div><div class="text-[11px] text-secondary">Infra Lead</div></div></div><select class="bg-transparent hover:bg-white text-[11px] font-semibold text-on-surface border border-transparent hover:border-outline-variant rounded-lg px-2 py-1"><option>Can edit</option><option selected="">Can comment</option><option>Can view</option><option class="text-error">Remove</option></select></div></div></div><div class="pt-2 border-t border-outline-variant"><div class="text-[11px] font-bold text-secondary uppercase tracking-wider mb-2">General access</div><div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-low"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-xl bg-[#eaf2ec] text-primary flex items-center justify-center"><span class="material-symbols-outlined text-[18px]">domain</span></div><div><div class="font-semibold text-[12px] text-on-surface">Anyone at Terra Design Workspace</div><div class="text-[11px] text-secondary">Anyone with link in organization can view</div></div></div><select class="bg-white border border-outline-variant text-[11px] font-semibold text-on-surface rounded-lg px-2 py-1"><option>Viewer</option><option>Commenter</option><option>Editor</option></select></div></div></div><div class="p-3.5 bg-[#f5f1ea] border-t border-outline-variant flex items-center justify-between"><button class="px-3 py-1.5 rounded-xl border border-outline-variant bg-white hover:bg-surface-container font-semibold text-[12px] text-on-surface flex items-center gap-1.5 shadow-xs transition-colors" onclick="const b=this;b.innerHTML='&lt;span class=\'material-symbols-outlined text-[15px]\'&gt;check&lt;/span&gt; Link Copied!';setTimeout(()=&gt;{b.innerHTML='&lt;span class=\'material-symbols-outlined text-[15px]\'&gt;link&lt;/span&gt; Copy Link';},2000)"><span class="material-symbols-outlined text-[15px]">link</span> Copy Link</button><div class="flex items-center gap-2"><button class="px-3.5 py-1.5 bg-primary hover:bg-primary-hover text-white text-[12px] font-semibold rounded-xl shadow-xs transition-colors" onclick="closeAllTerraModals()">Done</button></div></div></div></div><div class="terra-modal hidden fixed top-14 right-4 z-50 w-80 bg-[#fbfaf8] border border-outline-variant shadow-[0_16px_40px_rgba(46,50,48,0.18)] rounded-2xl p-4 animate-in fade-in" id="modal-account-popover"><div class="flex items-center justify-between pb-3 border-b border-outline-variant"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-tertiary text-white font-bold text-[13px] flex items-center justify-center shadow-xs ring-2 ring-primary/20">ME</div><div><div class="font-headline font-bold text-[13px] text-on-surface leading-tight">Sarah Jenkins</div><div class="text-[11px] text-secondary truncate">sarah@terra.design</div><span class="inline-block mt-0.5 px-2 py-0.2 rounded-full text-[10px] font-bold bg-[#eaf2ec] text-primary">Terra Pro Workspace</span></div></div><button class="w-6 h-6 rounded-lg hover:bg-surface-container flex items-center justify-center text-secondary" onclick="closeAllTerraModals()"><span class="material-symbols-outlined text-[16px]">close</span></button></div><div class="py-2.5 border-b border-outline-variant"><div class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-1.5">Status</div><button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors text-[11px] text-on-surface"><span class="flex items-center gap-2 font-medium"><span class="w-2 h-2 rounded-full bg-primary"></span>Active • Available</span><span class="text-[10px] text-secondary font-medium">Set status ▾</span></button></div><div class="py-2 border-b border-outline-variant space-y-0.5 text-[12px]"><div class="text-[10px] font-bold text-secondary uppercase tracking-wider px-2 py-1">Workspaces</div><button class="w-full flex items-center justify-between px-2 py-1.5 rounded-xl bg-[#eaf2ec] text-[#1e4a2c] font-semibold"><span class="flex items-center gap-2"><span class="material-symbols-outlined text-[15px] text-primary">check_circle</span>Terra Design Systems</span><span class="text-[10px] text-primary font-bold">Active</span></button><button class="w-full flex items-center justify-between px-2 py-1.5 rounded-xl hover:bg-surface-container text-on-surface transition-colors"><span class="flex items-center gap-2 text-secondary"><span class="material-symbols-outlined text-[15px]">folder_shared</span>Personal Drafts</span></button></div><div class="pt-2 space-y-0.5 text-[12px]"><button class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-xl hover:bg-surface-container text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px] text-secondary">account_circle</span><span>Profile &amp; Preferences</span></button><button class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-xl hover:bg-surface-container text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px] text-secondary">keyboard</span><span>Shortcuts Guide</span><span class="text-[10px] text-secondary ml-auto">⌘/</span></button><button class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-xl hover:bg-surface-container text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px] text-secondary">palette</span><span>Theme: Terra Organic Light</span></button><div class="my-1 border-t border-outline-variant"></div><button class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-xl hover:bg-error-container/40 text-error transition-colors"><span class="material-symbols-outlined text-[16px]">logout</span><span>Log out of Terra</span></button></div></div><script>function toggleTerraModal(modalId){const m=document.getElementById(modalId);const isHidden=m.classList.contains('hidden');document.querySelectorAll('.terra-modal').forEach(el=>el.classList.add('hidden'));if(isHidden){m.classList.remove('hidden');}}function closeAllTerraModals(){document.querySelectorAll('.terra-modal').forEach(el=>el.classList.add('hidden'));}</script></div></body></html>
