@@ -21,6 +21,7 @@ interface WordRibbonProps {
   onRejectAll: () => void;
   onExport: (format: string) => void;
   onOpenWordStats: () => void;
+  onOpenAssetUpload?: () => void;
   reviewPaneOpen: boolean;
   setReviewPaneOpen: (val: boolean) => void;
 }
@@ -43,6 +44,7 @@ export const WordRibbon: React.FC<WordRibbonProps> = ({
   onRejectAll,
   onExport,
   onOpenWordStats,
+  onOpenAssetUpload,
   reviewPaneOpen,
   setReviewPaneOpen,
 }) => {
@@ -466,11 +468,12 @@ export const WordRibbon: React.FC<WordRibbonProps> = ({
               {/* Media & Assets */}
               <div className="flex items-center gap-1" title="Media & Assets">
                 <button
+                  onClick={onOpenAssetUpload}
                   className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl hover:bg-[#f0ece4] cursor-pointer text-[#2e3230] font-semibold border border-transparent hover:border-[#e6e2da] transition-all"
-                  title="Insert Image"
+                  title="Upload / Manage Assets (Doc Hub)"
                 >
                   <span className="material-symbols-outlined text-[16px] text-[#4a7c59]">image</span>
-                  <span>Image</span>
+                  <span>Image &amp; Assets</span>
                   <span className="material-symbols-outlined text-[14px] text-[#74796e]">expand_more</span>
                 </button>
 

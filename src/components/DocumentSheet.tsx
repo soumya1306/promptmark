@@ -22,6 +22,7 @@ interface DocumentSheetProps {
   onSelectSarahComment: () => void;
   onSelectTrackedDiff: () => void;
   activeSelectionId: string | null;
+  insertedAssets?: Array<{ name: string; type: string; url?: string }>;
 }
 
 export const DocumentSheet: React.FC<DocumentSheetProps> = ({
@@ -37,6 +38,7 @@ export const DocumentSheet: React.FC<DocumentSheetProps> = ({
   onSelectSarahComment,
   onSelectTrackedDiff,
   activeSelectionId,
+  insertedAssets = [],
 }) => {
   const [executiveSummaryText, setExecutiveSummaryText] = useState(
     "As category boundaries dissolve across modern productivity suites, our growth vector pivots from single-player utility to synchronous workspace density. Market telemetry underscores a deliberate enterprise migration away from siloed tools toward composable real-time canvases."
@@ -342,6 +344,38 @@ export const DocumentSheet: React.FC<DocumentSheetProps> = ({
                   </tbody>
                 </table>
               </div>
+            </div>
+          )}
+
+          {/* INSERTED VISUAL ASSETS (From File & Asset Upload Modal) */}
+          {insertedAssets && insertedAssets.length > 0 && (
+            <div className="mb-8 space-y-4 animate-in fade-in duration-200">
+              {insertedAssets.map((asset, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 bg-[#f5f1ea] rounded-xl border border-[#e6e2da] shadow-2xs"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[18px] text-[#4a7c59]">
+                        {asset.type === "png" ? "image" : asset.type === "pdf" ? "picture_as_pdf" : "attachment"}
+                      </span>
+                      <span className="font-semibold text-xs text-[#2e3230]">{asset.name}</span>
+                    </div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#eaf2ec] text-[#4a7c59] border border-[#4a7c59]/20">
+                      Inserted Asset
+                    </span>
+                  </div>
+                  {asset.url && (
+                    <div className="rounded-lg overflow-hidden border border-[#e6e2da] max-h-72 bg-white flex items-center justify-center">
+                      <img src={asset.url} alt={asset.name} className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <p className="text-[11px] text-[#6b6358] mt-2 italic">
+                    Referenced in Q3 Strategic Launch Asset Library • Terra Cloud Storage Verified
+                  </p>
+                </div>
+              ))}
             </div>
           )}
 

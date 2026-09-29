@@ -151,6 +151,7 @@ export default function DocumentEditorPage() {
   // Modals state: follows Stitch prototype IDs
   const [activeModal, setActiveModal] = useState<TerraActiveModal>(null);
   const [screensModalOpen, setScreensModalOpen] = useState(false);
+  const [insertedAssets, setInsertedAssets] = useState<Array<{ name: string; type: string; url?: string }>>([]);
 
   // Switch preset configuration
   const handleSelectPreset = (preset: ScreenPreset) => {
@@ -320,6 +321,10 @@ export default function DocumentEditorPage() {
     setShowCallout(true);
   };
 
+  const handleInsertAsset = (name: string, type: string, url?: string) => {
+    setInsertedAssets((prev) => [...prev, { name, type, url }]);
+  };
+
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#f4f1ea] text-[#2e3230] font-body select-none text-[13px]">
       {/* 1. TOP APP BAR */}
@@ -334,6 +339,7 @@ export default function DocumentEditorPage() {
         onOpenShare={() => setActiveModal(activeModal === "modal-share-dialog" ? null : "modal-share-dialog")}
         onOpenCopilot={() => setActiveModal(activeModal === "modal-copilot-drawer" ? null : "modal-copilot-drawer")}
         onOpenAccount={() => setActiveModal(activeModal === "modal-account-popover" ? null : "modal-account-popover")}
+        onOpenAssetUpload={() => setActiveModal(activeModal === "modal-asset-upload" ? null : "modal-asset-upload")}
         onOpenScreensModal={() => setScreensModalOpen(true)}
         commentsCount={comments.filter((c) => !c.resolved).length + (trackedChangesState.diff1Accepted ? 0 : 2)}
         rightPanelOpen={rightPanelOpen}
@@ -361,6 +367,7 @@ export default function DocumentEditorPage() {
         setShowRulers={setShowRulers}
         onOpenShortcuts={() => setActiveModal("modal-search-palette")}
         onOpenCopilot={() => setActiveModal(activeModal === "modal-copilot-drawer" ? null : "modal-copilot-drawer")}
+        onOpenAssetUpload={() => setActiveModal(activeModal === "modal-asset-upload" ? null : "modal-asset-upload")}
         onOpenComment={() => {
           setRightPanelOpen(true);
           setActiveSelectionId("sarah-comment");
@@ -409,6 +416,7 @@ export default function DocumentEditorPage() {
               setActiveSelectionId("tracked-diff");
             }}
             activeSelectionId={activeSelectionId}
+            insertedAssets={insertedAssets}
           />
 
           {/* Right Margin Rail: Comment card or Full Review & Suggestions Pane */}
@@ -445,11 +453,14 @@ export default function DocumentEditorPage() {
         setActiveModal={setActiveModal}
         onApplyCopilotSuggestion={handleApplyCopilotSuggestion}
         onToggleTrackChanges={() => setTrackChangesOn(!trackChangesOn)}
+        trackChangesOn={trackChangesOn}
         onExportPdf={() => handleExport("pdf")}
         screensModalOpen={screensModalOpen}
         setScreensModalOpen={setScreensModalOpen}
         onSelectPreset={handleSelectPreset}
         activePreset={activePreset}
+        onInsertTable={handleInsertTable}
+        onInsertAsset={handleInsertAsset}
       />
     </div>
   );

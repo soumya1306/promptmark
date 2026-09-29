@@ -15,6 +15,7 @@ interface TopAppBarProps {
   onOpenCopilot: () => void;
   onOpenAccount: () => void;
   onOpenScreensModal: () => void;
+  onOpenAssetUpload?: () => void;
   commentsCount: number;
   rightPanelOpen: boolean;
   setRightPanelOpen: (val: boolean) => void;
@@ -32,6 +33,7 @@ export const TopAppBar: React.FC<TopAppBarProps> = ({
   onOpenCopilot,
   onOpenAccount,
   onOpenScreensModal,
+  onOpenAssetUpload,
   commentsCount,
   rightPanelOpen,
   setRightPanelOpen,
@@ -179,6 +181,18 @@ export const TopAppBar: React.FC<TopAppBarProps> = ({
             </div>
           )}
         </div>
+
+        {/* Doc Hub / Assets Button */}
+        <button
+          onClick={onOpenAssetUpload}
+          className="h-8 px-2.5 rounded-xl hover:bg-[#f0ece4] text-[#6b6358] hover:text-[#2e3230] hidden md:flex items-center gap-1.5 text-[12px] font-medium transition-colors border border-transparent hover:border-[#e6e2da]"
+          title="File & Asset Management (Doc Hub)"
+        >
+          <span className="material-symbols-outlined text-[17px] text-[#4a7c59]">
+            folder_special
+          </span>
+          <span className="hidden xl:inline">Doc Hub</span>
+        </button>
 
         {/* Comments badge toggle */}
         <button
