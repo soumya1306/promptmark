@@ -1,5 +1,6 @@
 -- ============================================================================
 -- WYSIWYG DOCUMENT EDITOR - COMPLETE DATABASE & STORAGE SCHEMA
+-- (Idempotent: Safe to run multiple times)
 -- ============================================================================
 
 -- 1. EXTENSIONS
@@ -17,13 +18,18 @@ create table if not exists public.profiles (
   updated_at timestamptz not null default now()
 );
 
+-- Ensure storage quota column default is 50MB if table already existed
+alter table public.profiles alter column storage_quota_bytes set default 52428800;
+
 -- Enable RLS on profiles
 alter table public.profiles enable row level security;
 
+drop policy if exists "Users can view own profile" on public.profiles;
 create policy "Users can view own profile" 
   on public.profiles for select 
   using (auth.uid() = id);
 
+drop policy if exists "Users can update own profile" on public.profiles;
 create policy "Users can update own profile" 
   on public.profiles for update 
   using (auth.uid() = id);
@@ -68,18 +74,22 @@ create table if not exists public.projects (
 
 alter table public.projects enable row level security;
 
+drop policy if exists "Users can view own projects" on public.projects;
 create policy "Users can view own projects" 
   on public.projects for select 
   using (auth.uid() = owner_id);
 
+drop policy if exists "Users can create own projects" on public.projects;
 create policy "Users can create own projects" 
   on public.projects for insert 
   with check (auth.uid() = owner_id);
 
+drop policy if exists "Users can update own projects" on public.projects;
 create policy "Users can update own projects" 
   on public.projects for update 
   using (auth.uid() = owner_id);
 
+drop policy if exists "Users can delete own projects" on public.projects;
 create policy "Users can delete own projects" 
   on public.projects for delete 
   using (auth.uid() = owner_id);
@@ -100,14 +110,17 @@ create table if not exists public.project_assets (
 
 alter table public.project_assets enable row level security;
 
+drop policy if exists "Users can view own assets" on public.project_assets;
 create policy "Users can view own assets" 
   on public.project_assets for select 
   using (auth.uid() = owner_id);
 
+drop policy if exists "Users can insert own assets" on public.project_assets;
 create policy "Users can insert own assets" 
   on public.project_assets for insert 
   with check (auth.uid() = owner_id);
 
+drop policy if exists "Users can delete own assets" on public.project_assets;
 create policy "Users can delete own assets" 
   on public.project_assets for delete 
   using (auth.uid() = owner_id);
@@ -166,16 +179,19 @@ values ('project-assets', 'project-assets', true)
 on conflict (id) do update set public = true;
 
 -- Bucket access policies
+drop policy if exists "Authenticated users can upload to project-assets" on storage.objects;
 create policy "Authenticated users can upload to project-assets" 
   on storage.objects for insert 
   to authenticated 
   with check (bucket_id = 'project-assets' and (auth.uid()::text = (storage.foldername(name))[1]));
 
+drop policy if exists "Users can read project-assets" on storage.objects;
 create policy "Users can read project-assets" 
   on storage.objects for select 
   to public 
   using (bucket_id = 'project-assets');
 
+drop policy if exists "Users can delete own files from project-assets" on storage.objects;
 create policy "Users can delete own files from project-assets" 
   on storage.objects for delete 
   to authenticated 
