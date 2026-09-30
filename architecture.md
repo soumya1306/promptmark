@@ -140,7 +140,7 @@ export const UserProfileSchema = z.object({
   email: z.string().email(),
   fullName: z.string().nullable(),
   avatarUrl: z.string().url().nullable(),
-  storageQuotaBytes: z.number().int().nonnegative().default(262144000), // 250 MB default
+  storageQuotaBytes: z.number().int().nonnegative().default(52428800), // 50 MB default
   storageUsedBytes: z.number().int().nonnegative().default(0),
   createdAt: z.string().datetime(),
 });
@@ -212,7 +212,7 @@ All endpoints adhere to standardized JSON envelopes:
 
 ### 6.1 Authentication Handshake
 - **Route**: `GET /auth/callback`
-- **Purpose**: Exchanges Google OAuth code for Supabase JWT session, provisions user profile with 250MB quota via PostgreSQL trigger, and redirects to editor.
+- **Purpose**: Exchanges Google OAuth code for Supabase JWT session, provisions user profile with 50MB quota via PostgreSQL trigger, and redirects to editor.
 
 ### 6.2 Project Workspace CRUD
 - `GET /api/projects`: List user's active document projects.
@@ -248,7 +248,7 @@ All endpoints adhere to standardized JSON envelopes:
         "sizeBytes": 2450000,
         "storageQuota": {
           "usedBytes": 12450000,
-          "quotaBytes": 262144000
+          "quotaBytes": 52428800
         }
       }
     }
@@ -259,7 +259,7 @@ All endpoints adhere to standardized JSON envelopes:
       "success": false,
       "error": {
         "code": "QUOTA_EXCEEDED",
-        "message": "Storage quota of 250MB exceeded. Please remove unused assets."
+        "message": "Storage quota of 50MB exceeded. Please remove unused assets."
       }
     }
     ```

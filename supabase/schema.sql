@@ -11,7 +11,7 @@ create table if not exists public.profiles (
   email text not null,
   full_name text,
   avatar_url text,
-  storage_quota_bytes bigint not null default 262144000, -- 250 MB default free quota
+  storage_quota_bytes bigint not null default 52428800, -- 50 MB default free quota
   storage_used_bytes bigint not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
@@ -38,7 +38,7 @@ begin
     new.email,
     coalesce(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', ''),
     coalesce(new.raw_user_meta_data->>'avatar_url', new.raw_user_meta_data->>'picture', ''),
-    262144000, -- 250 MB
+    52428800, -- 50 MB
     0
   )
   on conflict (id) do update set

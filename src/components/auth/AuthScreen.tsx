@@ -27,7 +27,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
   const getPasswordStrength = () => {
     if (password.length === 0) {
       return {
-        label: "At least 8+ chars",
+        label: "8+ chars",
         pillClass: "bg-[#f0ece4] text-[#6b6358]",
         dotClass: "bg-[#74796e]",
       };
@@ -43,13 +43,13 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
     const hasNumberOrSymbol = /[0-9!@#$%^&*]/.test(password);
     if (!hasUpper || !hasNumberOrSymbol) {
       return {
-        label: "Good — add a symbol",
+        label: "Add symbol",
         pillClass: "bg-[#f8e0a8] text-[#705c30]",
         dotClass: "bg-[#705c30]",
       };
     }
     return {
-      label: "Strong — 12+ chars",
+      label: "Strong",
       pillClass: "bg-[#c8e8d0] text-[#2a6038]",
       dotClass: "bg-[#4a7c59]",
     };
@@ -81,68 +81,68 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
   };
 
   const cardContent = (
-    <div className="w-full max-w-lg relative z-10 flex flex-col items-center">
+    <div className="w-full max-w-[460px] relative z-10 flex flex-col items-center">
       {/* Main Card */}
-      <div className="w-full bg-white rounded-2xl p-5 sm:p-7 md:p-8 shadow-[0_8px_32px_rgba(46,50,48,0.08)] relative border border-[#e6e2da]">
+      <div className="w-full bg-white rounded-2xl px-5 sm:px-7 py-4 sm:py-5 shadow-[0_8px_30px_rgba(46,50,48,0.07)] relative border border-[#e6e2da]">
         {/* Top Decorative Gentle Gradient Bar */}
         <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#4a7c59] via-[#78a886] to-[#c4a66a] rounded-t-2xl" />
 
         {isModal && onClose && (
           <button
             onClick={onClose}
-            className="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-[#f0ece4] hover:bg-[#eae6de] text-[#6b6358] flex items-center justify-center transition-colors"
+            className="absolute top-3 right-3 w-7 h-7 rounded-full bg-[#f0ece4] hover:bg-[#eae6de] text-[#6b6358] flex items-center justify-center transition-colors"
             title="Close"
           >
-            <span className="material-symbols-outlined text-[18px]">close</span>
+            <span className="material-symbols-outlined text-[16px]">close</span>
           </button>
         )}
 
         {/* Card Header */}
         <div className="flex flex-col items-center text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#f0e8db] text-[#5e5548] text-[11px] font-semibold tracking-wide">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#f0e8db] text-[#5e5548] text-[10px] font-semibold tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-[#4a7c59] animate-pulse" />
             <span>Early Access v2.4</span>
           </div>
 
           {/* Headline */}
-          <h1 className="font-headline text-2xl sm:text-3xl font-bold tracking-tight text-[#2e3230] mt-2.5 sm:mt-3 leading-snug">
+          <h1 className="font-headline text-xl sm:text-2xl font-bold tracking-tight text-[#2e3230] mt-1.5 leading-snug">
             {authMode === "signup" ? "Join your collaborative sanctuary" : "Welcome back to your sanctuary"}
           </h1>
 
           {/* Subheadline */}
-          <p className="font-body text-xs sm:text-sm text-[#4a4e4a] max-w-md mt-1.5 leading-relaxed">
+          <p className="font-body text-xs text-[#6b6358] max-w-sm mt-0.5 leading-relaxed">
             Write, review, and organize in real-time with teams who care about clarity and calm craft.
           </p>
         </div>
 
         {/* Error Notification */}
         {errorMessage && (
-          <div className="mt-3.5 p-2.5 rounded-xl bg-[#ffdad8] border border-[#b83230]/20 text-[#690005] text-xs flex items-center justify-between animate-in fade-in">
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[16px] text-[#b83230] shrink-0">error</span>
+          <div className="mt-2.5 p-2 rounded-xl bg-[#ffdad8] border border-[#b83230]/20 text-[#690005] text-[11px] flex items-center justify-between animate-in fade-in">
+            <div className="flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[15px] text-[#b83230] shrink-0">error</span>
               <span className="leading-tight">{errorMessage}</span>
             </div>
-            <button onClick={() => setErrorMessage(null)} className="hover:opacity-75 shrink-0 ml-2">
-              <span className="material-symbols-outlined text-[15px]">close</span>
+            <button onClick={() => setErrorMessage(null)} className="hover:opacity-75 shrink-0 ml-1.5">
+              <span className="material-symbols-outlined text-[14px]">close</span>
             </button>
           </div>
         )}
 
         {/* Google One-Click Auth Button */}
-        <div className="mt-5 sm:mt-6 flex flex-col items-center">
+        <div className="mt-3.5 flex flex-col items-center">
           <button
             onClick={handleGoogleSignIn}
             disabled={isGoogleLoading}
             type="button"
-            className="w-full flex items-center justify-center gap-3 px-4 py-2.5 sm:py-3 rounded-xl bg-[#f5f1ea] hover:bg-[#eae6de] active:scale-[0.99] transition-all duration-200 text-[#2e3230] font-semibold text-sm shadow-xs border border-[#e6e2da] cursor-pointer disabled:opacity-60"
+            className="w-full flex items-center justify-center gap-2.5 px-4 py-2 sm:py-2.5 rounded-xl bg-[#f5f1ea] hover:bg-[#eae6de] active:scale-[0.99] transition-all duration-200 text-[#2e3230] font-semibold text-xs sm:text-sm shadow-2xs border border-[#e6e2da] cursor-pointer disabled:opacity-60"
           >
             {isGoogleLoading ? (
-              <span className="material-symbols-outlined animate-spin text-[18px] text-[#4a7c59]">
+              <span className="material-symbols-outlined animate-spin text-[16px] text-[#4a7c59]">
                 progress_activity
               </span>
             ) : (
-              <svg className="w-4.5 h-4.5 flex-shrink-0" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
                 <path
                   d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.15z"
                   fill="#4285F4"
@@ -161,38 +161,38 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
                 />
               </svg>
             )}
-            <span className="font-medium text-sm sm:text-base">
+            <span className="font-semibold text-xs sm:text-sm">
               {authMode === "signup" ? "Sign up with Google" : "Sign in with Google"}
             </span>
           </button>
 
-          <div className="flex items-center gap-1.5 mt-2 text-[11px] sm:text-xs text-[#6b6358] font-medium">
-            <span className="material-symbols-outlined text-[14px] text-[#4a7c59]">verified</span>
-            <span>Recommended for instant workspace sync &amp; 250MB storage</span>
+          <div className="flex items-center gap-1 mt-1 text-[10px] text-[#6b6358] font-medium">
+            <span className="material-symbols-outlined text-[13px] text-[#4a7c59]">verified</span>
+            <span>Instant workspace sync &amp; 50MB cloud quota</span>
           </div>
         </div>
 
         {/* Divider */}
-        <div className="relative flex items-center justify-center my-3.5 sm:my-4.5">
+        <div className="relative flex items-center justify-center my-2.5">
           <div className="w-full h-px bg-[#e6e2da]" />
-          <span className="absolute px-3 bg-white text-[11px] uppercase tracking-wider text-[#6b6358] font-semibold">
+          <span className="absolute px-2.5 bg-white text-[10px] uppercase tracking-wider text-[#6b6358] font-semibold">
             or continue with work email
           </span>
         </div>
 
         {/* Form */}
-        <form className="flex flex-col gap-3 sm:gap-3.5" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
           {authMode === "signup" && (
-            <div className="flex flex-col gap-1">
-              <label className="text-[11px] font-semibold tracking-wide text-[#2e3230] uppercase" htmlFor="fullName">
+            <div className="flex flex-col gap-0.5">
+              <label className="text-[10px] font-semibold tracking-wide text-[#2e3230] uppercase" htmlFor="fullName">
                 Full Name
               </label>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3 text-[#6b6358] text-[18px] pointer-events-none">
+                <span className="material-symbols-outlined absolute left-2.5 text-[#6b6358] text-[16px] pointer-events-none">
                   person
                 </span>
                 <input
-                  className="w-full pl-9 pr-3.5 py-2 sm:py-2.5 bg-[#f5f1ea] rounded-xl text-xs sm:text-sm text-[#2e3230] placeholder:text-[#6b6358]/60 focus:outline-none focus:ring-2 focus:ring-[#4a7c59]/30 transition-all border border-transparent focus:border-[#4a7c59]"
+                  className="w-full pl-8 pr-3 py-1.5 bg-[#f5f1ea] rounded-lg text-xs text-[#2e3230] placeholder:text-[#6b6358]/60 focus:outline-none focus:ring-1.5 focus:ring-[#4a7c59]/40 transition-all border border-transparent focus:border-[#4a7c59]"
                   id="fullName"
                   placeholder="e.g. Sarah Jenkins"
                   value={fullName}
@@ -204,16 +204,16 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
           )}
 
           {/* Work Email */}
-          <div className="flex flex-col gap-1">
-            <label className="text-[11px] font-semibold tracking-wide text-[#2e3230] uppercase" htmlFor="workEmail">
+          <div className="flex flex-col gap-0.5">
+            <label className="text-[10px] font-semibold tracking-wide text-[#2e3230] uppercase" htmlFor="workEmail">
               Work Email
             </label>
             <div className="relative flex items-center">
-              <span className="material-symbols-outlined absolute left-3 text-[#6b6358] text-[18px] pointer-events-none">
+              <span className="material-symbols-outlined absolute left-2.5 text-[#6b6358] text-[16px] pointer-events-none">
                 mail
               </span>
               <input
-                className="w-full pl-9 pr-3.5 py-2 sm:py-2.5 bg-[#f5f1ea] rounded-xl text-xs sm:text-sm text-[#2e3230] placeholder:text-[#6b6358]/60 focus:outline-none focus:ring-2 focus:ring-[#4a7c59]/30 transition-all border border-transparent focus:border-[#4a7c59]"
+                className="w-full pl-8 pr-3 py-1.5 bg-[#f5f1ea] rounded-lg text-xs text-[#2e3230] placeholder:text-[#6b6358]/60 focus:outline-none focus:ring-1.5 focus:ring-[#4a7c59]/40 transition-all border border-transparent focus:border-[#4a7c59]"
                 id="workEmail"
                 placeholder="you@company.design"
                 value={email}
@@ -225,28 +225,28 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
           </div>
 
           {/* Password Field */}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-0.5">
             <div className="flex items-center justify-between">
-              <label className="text-[11px] font-semibold tracking-wide text-[#2e3230] uppercase" htmlFor="password">
+              <label className="text-[10px] font-semibold tracking-wide text-[#2e3230] uppercase" htmlFor="password">
                 Password
               </label>
               {authMode === "signup" && (
                 <span
-                  className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium transition-all ${strength.pillClass}`}
+                  className={`inline-flex items-center gap-1 px-1.5 py-0.2 rounded-full text-[9px] font-medium transition-all ${strength.pillClass}`}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full ${strength.dotClass}`} />
+                  <span className={`w-1 h-1 rounded-full ${strength.dotClass}`} />
                   <span>{strength.label}</span>
                 </span>
               )}
             </div>
             <div className="relative flex items-center">
-              <span className="material-symbols-outlined absolute left-3 text-[#6b6358] text-[18px] pointer-events-none">
+              <span className="material-symbols-outlined absolute left-2.5 text-[#6b6358] text-[16px] pointer-events-none">
                 lock
               </span>
               <input
-                className="w-full pl-9 pr-10 py-2 sm:py-2.5 bg-[#f5f1ea] rounded-xl text-xs sm:text-sm text-[#2e3230] placeholder:text-[#6b6358]/60 focus:outline-none focus:ring-2 focus:ring-[#4a7c59]/30 transition-all border border-transparent focus:border-[#4a7c59]"
+                className="w-full pl-8 pr-8 py-1.5 bg-[#f5f1ea] rounded-lg text-xs text-[#2e3230] placeholder:text-[#6b6358]/60 focus:outline-none focus:ring-1.5 focus:ring-[#4a7c59]/40 transition-all border border-transparent focus:border-[#4a7c59]"
                 id="password"
-                placeholder={authMode === "signup" ? "Create password (8+ chars)" : "Enter password"}
+                placeholder={authMode === "signup" ? "8+ chars with symbol" : "Enter password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -255,10 +255,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 text-[#6b6358] hover:text-[#2e3230] transition-colors focus:outline-none flex items-center justify-center p-0.5"
+                className="absolute right-2.5 text-[#6b6358] hover:text-[#2e3230] transition-colors focus:outline-none flex items-center justify-center p-0.5"
                 title={showPassword ? "Hide password" : "Show password"}
               >
-                <span className="material-symbols-outlined text-[18px]">
+                <span className="material-symbols-outlined text-[16px]">
                   {showPassword ? "visibility_off" : "visibility"}
                 </span>
               </button>
@@ -267,49 +267,76 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
 
           {/* CTA Button */}
           <button
-            className="w-full mt-1.5 py-2.5 sm:py-3 px-5 rounded-xl bg-[#4a7c59] hover:bg-[#3d6749] text-white font-semibold text-sm sm:text-base transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_4px_16px_rgba(74,124,89,0.22)] active:scale-[0.99] cursor-pointer"
+            className="w-full mt-1 py-2 px-4 rounded-xl bg-[#4a7c59] hover:bg-[#3d6749] text-white font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-1.5 shadow-[0_2px_12px_rgba(74,124,89,0.22)] active:scale-[0.99] cursor-pointer"
             type="submit"
           >
             <span>{authMode === "signup" ? "Create free Promptmark account" : "Sign in to workspace"}</span>
-            <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
+            <span className="material-symbols-outlined text-[15px]">arrow_forward</span>
           </button>
         </form>
 
         {/* Trust & Features Checklist Inside Card */}
-        <div className="mt-3.5 sm:mt-4.5 pt-3 sm:pt-3.5 bg-[#f5f1ea] rounded-xl p-3 sm:p-3.5 border border-[#e6e2da]/60">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] sm:text-xs text-[#6b6358] font-medium">
-            <div className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[#4a7c59] text-[15px] shrink-0">check_circle</span>
-              <span>250MB Cloud Quota</span>
+        <div className="mt-2.5 py-1.5 px-3 bg-[#f5f1ea] rounded-xl border border-[#e6e2da]/60">
+          <div className="flex items-center justify-between text-[10px] text-[#6b6358] font-medium">
+            <div className="flex items-center gap-1">
+              <span className="material-symbols-outlined text-[#4a7c59] text-[13px] shrink-0">check_circle</span>
+              <span>50MB Quota</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[#4a7c59] text-[15px] shrink-0">check_circle</span>
-              <span>No credit card needed</span>
+            <div className="flex items-center gap-1">
+              <span className="material-symbols-outlined text-[#4a7c59] text-[13px] shrink-0">check_circle</span>
+              <span>No card needed</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[#4a7c59] text-[15px] shrink-0">check_circle</span>
-              <span>Native DOCX Canvas</span>
+            <div className="flex items-center gap-1">
+              <span className="material-symbols-outlined text-[#4a7c59] text-[13px] shrink-0">check_circle</span>
+              <span>Native DOCX</span>
             </div>
           </div>
         </div>
 
         {/* Demo / Guest Option */}
         {onContinueAsGuest && (
-          <div className="mt-3 sm:mt-3.5 pt-2.5 flex justify-center border-t border-[#e6e2da]/40">
+          <div className="mt-2 pt-1.5 flex justify-center border-t border-[#e6e2da]/40">
             <button
               type="button"
               onClick={onContinueAsGuest}
-              className="text-xs font-semibold text-[#705c30] hover:text-[#2e3230] hover:underline flex items-center gap-1.5 transition-colors cursor-pointer py-1 px-2.5 rounded-lg hover:bg-[#f5f1ea]"
+              className="text-[11px] font-semibold text-[#705c30] hover:text-[#2e3230] hover:underline flex items-center gap-1 transition-colors cursor-pointer py-0.5 px-2 rounded-lg hover:bg-[#f5f1ea]"
             >
-              <span className="material-symbols-outlined text-[15px] text-[#705c30]">explore</span>
+              <span className="material-symbols-outlined text-[14px] text-[#705c30]">explore</span>
               <span>Or explore editor in Guest / Demo mode &rarr;</span>
             </button>
           </div>
         )}
 
+        {/* Social Proof Collaborator Strip (Integrated inside Card) */}
+        <div className="mt-2.5 pt-2 border-t border-[#e6e2da]/50 flex items-center justify-center gap-2 text-center">
+          <div className="flex items-center -space-x-1.5 shrink-0">
+            <img
+              className="w-5 h-5 rounded-full object-cover shadow-2xs bg-[#e4e0d8] border border-[#faf6f0]"
+              alt="Sarah K."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuA08zLlh4OZDp-zW8NkL9YcQ7HPN6RmURYQx6B3KTFywLbJtb8v-gZ-n_tXUC0IFG9qE0GJlYlJOdtup4xNgJyK9HBYqbOKQQVUZbG53zZdDHhjpVuJ-jfDHtzY4uX8Y8thsmzI8HIlN9PgVNU0N15yq0sPBBjsLm0eFkb_YFfQWRzN4VKOOYFcEfBR1Dyc7U2jtPGcf1bcMTi96No2VT-riPobyyNA3rp5aCEmfsI7M0lmJDIlOPj4"
+            />
+            <img
+              className="w-5 h-5 rounded-full object-cover shadow-2xs bg-[#e4e0d8] border border-[#faf6f0]"
+              alt="Alex R."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpZL2JwVjtHlDHO1qU-AFL6uTFT0W_B37hOv1HmbtYjV4w6GQl8xgEmOBOwjSV26raMrVZOtxFbO0TeTqh-yfvN5qLd_djWam0Z7b_o3w_ave108hGh5-7H9HZHBkgNrN4mBH0wyzaNWzlPAd1PDDCPVmQpm8O1HSVGlozPQN7iUpJgTfq8PKH3U-dDeYtyUHmZWntMymqPyy0E_d-am2m2IuiUwt2gXE34ECLKmjGFc5PiCOH9_4e"
+            />
+            <img
+              className="w-5 h-5 rounded-full object-cover shadow-2xs bg-[#e4e0d8] border border-[#faf6f0]"
+              alt="David C."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoDSMP2fvp79F_SBqgJ6gYvc6S4UpUPRvnpUrdXbR3GKSngNEedjaAzt9S9ba-yPcZI8Zg1GSXQTntjlrxVZhoekVcq2vT-deVRWxMIYAZoWwfT_GdPWnLMDW8OJ3bNf0wAi0BBuw544IPuWWSvazDvSwEJPz-o6kZsbTmRa4vOUfwVgGW9CqERq72iBYAYZGezSlBZuiAGMtgPpEA-KTgvKE-S9V5h4xlswb0VmKgFDrnNVS6fGSk"
+            />
+            <div className="w-5 h-5 rounded-full bg-[#f0e8db] text-[#5e5548] flex items-center justify-center text-[8px] font-bold shadow-2xs border border-[#faf6f0]">
+              +40k
+            </div>
+          </div>
+          <p className="text-[10px] text-[#6b6358]">
+            Trusted by 40,000+ writers and craft teams.
+          </p>
+        </div>
+
         {/* Footer Micro-links */}
-        <div className="mt-3 sm:mt-4 flex flex-col items-center text-center gap-1.5">
-          <p className="text-xs sm:text-sm text-[#6b6358]">
+        <div className="mt-2 flex flex-col items-center text-center gap-1">
+          <p className="text-[11px] text-[#6b6358]">
             {authMode === "signup" ? (
               <>
                 Already have an account?{" "}
@@ -334,10 +361,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
               </>
             )}
           </p>
-          <p className="text-[10px] sm:text-[11px] text-[#6b6358]/80 max-w-sm leading-relaxed">
+          <p className="text-[9px] text-[#6b6358]/80 max-w-xs leading-tight">
             By continuing, you agree to Promptmark’s{" "}
             <a className="underline hover:text-[#2e3230]" href="#">
-              Terms of Service
+              Terms
             </a>{" "}
             and{" "}
             <a className="underline hover:text-[#2e3230]" href="#">
@@ -347,40 +374,13 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
           </p>
         </div>
       </div>
-
-      {/* Social Proof Collaborator Strip (Below Card) */}
-      <div className="mt-3.5 sm:mt-4 flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 px-3 text-center sm:text-left">
-        <div className="flex items-center -space-x-1.5 shrink-0">
-          <img
-            className="w-6 h-6 sm:w-7 sm:h-7 rounded-full object-cover shadow-xs bg-[#e4e0d8] border-2 border-[#faf6f0]"
-            alt="Sarah K."
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA08zLlh4OZDp-zW8NkL9YcQ7HPN6RmURYQx6B3KTFywLbJtb8v-gZ-n_tXUC0IFG9qE0GJlYlJOdtup4xNgJyK9HBYqbOKQQVUZbG53zZdDHhjpVuJ-jfDHtzY4uX8Y8thsmzI8HIlN9PgVNU0N15yq0sPBBjsLm0eFkb_YFfQWRzN4VKOOYFcEfBR1Dyc7U2jtPGcf1bcMTi96No2VT-riPobyyNA3rp5aCEmfsI7M0lmJDIlOPj4"
-          />
-          <img
-            className="w-6 h-6 sm:w-7 sm:h-7 rounded-full object-cover shadow-xs bg-[#e4e0d8] border-2 border-[#faf6f0]"
-            alt="Alex R."
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpZL2JwVjtHlDHO1qU-AFL6uTFT0W_B37hOv1HmbtYjV4w6GQl8xgEmOBOwjSV26raMrVZOtxFbO0TeTqh-yfvN5qLd_djWam0Z7b_o3w_ave108hGh5-7H9HZHBkgNrN4mBH0wyzaNWzlPAd1PDDCPVmQpm8O1HSVGlozPQN7iUpJgTfq8PKH3U-dDeYtyUHmZWntMymqPyy0E_d-am2m2IuiUwt2gXE34ECLKmjGFc5PiCOH9_4e"
-          />
-          <img
-            className="w-6 h-6 sm:w-7 sm:h-7 rounded-full object-cover shadow-xs bg-[#e4e0d8] border-2 border-[#faf6f0]"
-            alt="David C."
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoDSMP2fvp79F_SBqgJ6gYvc6S4UpUPRvnpUrdXbR3GKSngNEedjaAzt9S9ba-yPcZI8Zg1GSXQTntjlrxVZhoekVcq2vT-deVRWxMIYAZoWwfT_GdPWnLMDW8OJ3bNf0wAi0BBuw544IPuWWSvazDvSwEJPz-o6kZsbTmRa4vOUfwVgGW9CqERq72iBYAYZGezSlBZuiAGMtgPpEA-KTgvKE-S9V5h4xlswb0VmKgFDrnNVS6fGSk"
-          />
-          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#f0e8db] text-[#5e5548] flex items-center justify-center text-[9px] sm:text-[10px] font-bold shadow-xs border-2 border-[#faf6f0]">
-            +40k
-          </div>
-        </div>
-        <p className="text-[11px] sm:text-xs text-[#6b6358] max-w-sm sm:max-w-md">
-          Trusted by 40,000+ writers, researchers, and product creators at humane craft companies.
-        </p>
-      </div>
     </div>
   );
 
   if (isModal) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#2e3230]/40 backdrop-blur-md overflow-y-auto animate-in fade-in">
-        <div className="my-auto py-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#2e3230]/40 backdrop-blur-md overflow-y-auto animate-in fade-in">
+        <div className="my-auto py-2">
           {cardContent}
         </div>
       </div>
@@ -388,33 +388,31 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-[#faf6f0] font-body text-[#2e3230] flex flex-col justify-between selection:bg-[#c8e8d0] selection:text-[#002110] relative overflow-y-auto w-full">
+    <div className="h-screen w-full bg-[#faf6f0] font-body text-[#2e3230] flex flex-col justify-between selection:bg-[#c8e8d0] selection:text-[#002110] relative overflow-hidden py-2 sm:py-3 px-3 sm:px-6">
       {/* Top Header */}
-      <header className="w-full pt-4 sm:pt-6 pb-2 sm:pb-3 relative z-10 shrink-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 flex flex-col items-center justify-center gap-1.5">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-[#4a7c59] flex items-center justify-center text-white shadow-[0_4px_16px_rgba(46,50,48,0.06)]">
-              <span className="material-symbols-outlined text-[18px]">nature</span>
-            </div>
-            <span className="font-headline text-xl sm:text-2xl font-bold tracking-tight text-[#2e3230]">
-              Promptmark
-            </span>
+      <header className="w-full flex items-center justify-center gap-2 shrink-0 py-1">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-xl bg-[#4a7c59] flex items-center justify-center text-white shadow-xs">
+            <span className="material-symbols-outlined text-[16px]">nature</span>
           </div>
-          <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#f0ece4] text-[11px] font-medium text-[#6b6358]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#4a7c59]" />
-            <span>Organic Documents</span>
-          </div>
+          <span className="font-headline text-lg sm:text-xl font-bold tracking-tight text-[#2e3230]">
+            Promptmark
+          </span>
+        </div>
+        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#f0ece4] text-[10px] font-medium text-[#6b6358]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#4a7c59]" />
+          <span>Organic Documents</span>
         </div>
       </header>
 
       {/* Main Body */}
-      <main className="w-full flex-1 flex flex-col items-center justify-center px-3 sm:px-6 py-2 sm:py-4 relative my-auto shrink-0">
+      <main className="w-full flex-1 flex flex-col items-center justify-center relative my-auto shrink-0 py-1">
         {/* Subtle ambient decorative organic orbs */}
-        <div className="absolute top-1/4 -left-20 w-72 h-72 rounded-full bg-[#c8e8d0]/30 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 -right-16 w-80 h-80 rounded-full bg-[#f8e0a8]/35 blur-3xl pointer-events-none" />
+        <div className="absolute top-1/4 -left-20 w-64 h-64 rounded-full bg-[#c8e8d0]/25 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-1/4 -right-16 w-72 h-72 rounded-full bg-[#f8e0a8]/30 blur-3xl pointer-events-none" />
 
         {/* Organic Botanical Contour Lines (SVG Background Accent) */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40 overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-30 overflow-hidden">
           <svg
             className="w-full max-w-4xl h-full text-[#c4c8bc]"
             fill="none"
@@ -442,22 +440,20 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-3 sm:py-4 text-[11px] sm:text-xs text-[#6b6358] relative z-10 shrink-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-          <div className="flex items-center gap-4 sm:gap-6">
-            <a className="hover:text-[#2e3230] transition-colors" href="#">
-              Privacy Policy
-            </a>
-            <a className="hover:text-[#2e3230] transition-colors" href="#">
-              Terms of Service
-            </a>
-            <a className="hover:text-[#2e3230] transition-colors" href="#">
-              Security &amp; Trust
-            </a>
-          </div>
-          <div className="text-[10px] sm:text-xs text-[#6b6358]/80">
-            © {new Date().getFullYear()} Promptmark Systems, Inc. Rooted Warmth.
-          </div>
+      <footer className="w-full py-1.5 text-[10px] sm:text-[11px] text-[#6b6358] shrink-0 border-t border-[#e6e2da]/50 max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5">
+        <div className="flex items-center gap-4">
+          <a className="hover:text-[#2e3230] transition-colors" href="#">
+            Privacy Policy
+          </a>
+          <a className="hover:text-[#2e3230] transition-colors" href="#">
+            Terms of Service
+          </a>
+          <a className="hover:text-[#2e3230] transition-colors" href="#">
+            Security &amp; Trust
+          </a>
+        </div>
+        <div className="text-[10px] text-[#6b6358]/80">
+          © {new Date().getFullYear()} Promptmark Systems, Inc. Rooted Warmth.
         </div>
       </footer>
     </div>

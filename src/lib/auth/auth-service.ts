@@ -84,7 +84,7 @@ export async function fetchCurrentProfile(): Promise<UserProfile | null> {
         email: user.email ?? 'user@sanctuary.design',
         full_name: (user.user_metadata?.full_name as string) ?? (user.user_metadata?.name as string) ?? 'Sanctuary Author',
         avatar_url: (user.user_metadata?.avatar_url as string) ?? (user.user_metadata?.picture as string) ?? null,
-        storage_quota_bytes: 262144000,
+        storage_quota_bytes: 52428800, // 50 MB
         storage_used_bytes: 0,
       };
     }

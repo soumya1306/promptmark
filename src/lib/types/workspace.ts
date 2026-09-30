@@ -5,7 +5,7 @@ export const UserProfileSchema = z.object({
   email: z.string().email(),
   full_name: z.string().nullable(),
   avatar_url: z.string().nullable(),
-  storage_quota_bytes: z.number().int().nonnegative().default(262144000), // 250 MB
+  storage_quota_bytes: z.number().int().nonnegative().default(52428800), // 50 MB
   storage_used_bytes: z.number().int().nonnegative().default(0),
   created_at: z.string().optional(),
   updated_at: z.string().optional(),
