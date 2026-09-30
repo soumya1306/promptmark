@@ -19,6 +19,8 @@ interface TopAppBarProps {
   commentsCount: number;
   rightPanelOpen: boolean;
   setRightPanelOpen: (val: boolean) => void;
+  userProfile?: any;
+  onSignOut?: () => void;
 }
 
 export const TopAppBar: React.FC<TopAppBarProps> = ({
@@ -37,6 +39,8 @@ export const TopAppBar: React.FC<TopAppBarProps> = ({
   commentsCount,
   rightPanelOpen,
   setRightPanelOpen,
+  userProfile,
+  onSignOut,
 }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [showPresenceMenu, setShowPresenceMenu] = useState(false);
@@ -233,10 +237,21 @@ export const TopAppBar: React.FC<TopAppBarProps> = ({
         {/* User Profile Avatar */}
         <div
           onClick={onOpenAccount}
-          className="w-8 h-8 rounded-full bg-[#705c30] text-white font-bold text-[11px] flex items-center justify-center shadow-xs cursor-pointer hover:ring-2 hover:ring-[#4a7c59]/40 transition-all select-none"
-          title="Account & Workspaces (Sarah Jenkins / ME)"
+          className="w-8 h-8 rounded-full bg-[#705c30] text-white font-bold text-[11px] flex items-center justify-center shadow-xs cursor-pointer hover:ring-2 hover:ring-[#4a7c59]/40 transition-all select-none overflow-hidden"
+          title={`Account & Workspaces (${userProfile?.full_name || userProfile?.email || "Guest"})`}
         >
-          ME
+          {userProfile?.avatar_url ? (
+            <img src={userProfile.avatar_url} alt="User Avatar" className="w-full h-full object-cover" />
+          ) : userProfile?.full_name ? (
+            userProfile.full_name
+              .split(" ")
+              .map((n: string) => n[0])
+              .join("")
+              .toUpperCase()
+              .slice(0, 2)
+          ) : (
+            "ME"
+          )}
         </div>
       </div>
     </header>

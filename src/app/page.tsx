@@ -9,8 +9,16 @@ import { RightSidebar } from "@/components/RightSidebar";
 import { StatusBar } from "@/components/StatusBar";
 import { Modals, TerraActiveModal } from "@/components/Modals";
 import { RibbonTab, ScreenPreset, Collaborator, CommentItem, ChecklistItem, TableRow } from "@/components/types";
+import { AuthScreen } from "@/components/auth/AuthScreen";
+import { getCurrentUser, fetchCurrentProfile, subscribeToAuth, signOutUser } from "@/lib/auth/auth-service";
 
 export default function DocumentEditorPage() {
+  // User Authentication State
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [isGuestMode, setIsGuestMode] = useState(false);
+
   // Preset and Tab state
   const [activePreset, setActivePreset] = useState<ScreenPreset>(1);
   const [activeTab, setActiveTab] = useState<RibbonTab>("home");
@@ -152,6 +160,48 @@ export default function DocumentEditorPage() {
   const [activeModal, setActiveModal] = useState<TerraActiveModal>(null);
   const [screensModalOpen, setScreensModalOpen] = useState(false);
   const [insertedAssets, setInsertedAssets] = useState<Array<{ name: string; type: string; url?: string }>>([]);
+
+  // Check auth session on landing and subscribe to changes
+  useEffect(() => {
+    let isMounted = true;
+
+    async function checkAuth() {
+      try {
+        const user = await getCurrentUser();
+        if (isMounted) {
+          if (user) {
+            setCurrentUser(user);
+            const profile = await fetchCurrentProfile();
+            if (isMounted) setUserProfile(profile);
+          }
+          setAuthLoading(false);
+        }
+      } catch (err) {
+        console.warn("[DocumentEditorPage] Auth check failed:", err);
+        if (isMounted) setAuthLoading(false);
+      }
+    }
+
+    checkAuth();
+
+    const unsubscribe = subscribeToAuth((user) => {
+      if (isMounted) {
+        setCurrentUser(user);
+        if (user) {
+          fetchCurrentProfile().then((p) => {
+            if (isMounted) setUserProfile(p);
+          });
+        } else {
+          setUserProfile(null);
+        }
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
+  }, []);
 
   // Switch preset configuration
   const handleSelectPreset = (preset: ScreenPreset) => {
@@ -325,6 +375,49 @@ export default function DocumentEditorPage() {
     setInsertedAssets((prev) => [...prev, { name, type, url }]);
   };
 
+  const handleSignOut = async () => {
+    try {
+      await signOutUser();
+    } catch (err) {
+      console.warn("Sign out error:", err);
+    }
+    setCurrentUser(null);
+    setUserProfile(null);
+    setIsGuestMode(false);
+  };
+
+  // 1. Loading Splash
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-[#faf6f0] flex flex-col items-center justify-center text-[#2e3230]">
+        <div className="flex flex-col items-center gap-4 animate-in fade-in duration-300">
+          <div className="w-14 h-14 rounded-2xl bg-[#4a7c59] flex items-center justify-center text-white shadow-lg animate-pulse">
+            <span className="material-symbols-outlined text-[32px]">nature</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <span className="font-headline text-2xl font-bold tracking-tight text-[#2e3230]">
+              Promptmark
+            </span>
+            <p className="text-xs text-[#6b6358] mt-1 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#4a7c59] animate-ping" />
+              <span>Opening your collaborative sanctuary...</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Unauthenticated Gate -> Land Directly on Stitch Login Screen!
+  if (!currentUser && !isGuestMode) {
+    return (
+      <AuthScreen
+        onSuccess={() => setAuthLoading(false)}
+        onContinueAsGuest={() => setIsGuestMode(true)}
+      />
+    );
+  }
+
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#f4f1ea] text-[#2e3230] font-body select-none text-[13px]">
       {/* 1. TOP APP BAR */}
@@ -344,6 +437,8 @@ export default function DocumentEditorPage() {
         commentsCount={comments.filter((c) => !c.resolved).length + (trackedChangesState.diff1Accepted ? 0 : 2)}
         rightPanelOpen={rightPanelOpen}
         setRightPanelOpen={setRightPanelOpen}
+        userProfile={userProfile}
+        onSignOut={handleSignOut}
       />
 
       {/* 2. FULL WORD RIBBON */}
@@ -461,6 +556,8 @@ export default function DocumentEditorPage() {
         activePreset={activePreset}
         onInsertTable={handleInsertTable}
         onInsertAsset={handleInsertAsset}
+        userProfile={userProfile}
+        onSignOut={handleSignOut}
       />
     </div>
   );

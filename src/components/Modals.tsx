@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { ScreenPreset } from "./types";
+import { AuthScreen } from "./auth/AuthScreen";
 
 export type TerraActiveModal =
   | null
@@ -10,7 +11,8 @@ export type TerraActiveModal =
   | "modal-copilot-drawer"
   | "modal-share-dialog"
   | "modal-account-popover"
-  | "modal-asset-upload";
+  | "modal-asset-upload"
+  | "modal-auth";
 
 interface UploadedFileItem {
   id: string;
@@ -36,6 +38,8 @@ interface ModalsProps {
   activePreset: ScreenPreset;
   onInsertTable?: (rows: number, cols: number) => void;
   onInsertAsset?: (assetName: string, assetType: string, url?: string) => void;
+  userProfile?: any;
+  onSignOut?: () => void;
 }
 
 export const Modals: React.FC<ModalsProps> = ({
@@ -51,6 +55,8 @@ export const Modals: React.FC<ModalsProps> = ({
   activePreset,
   onInsertTable,
   onInsertAsset,
+  userProfile,
+  onSignOut,
 }) => {
   // ==========================================
   // 1. SEARCH & COMMAND PALETTE STATE (Stitch: 4e4e342951804c988e9aa72a40ac986b)
@@ -1224,6 +1230,14 @@ export const Modals: React.FC<ModalsProps> = ({
       )}
 
       {/* ========================================================
+          MODAL 2.5: PROMPTMARK AUTHENTICATION & GOOGLE SIGN-IN
+          Stitch Screen ID: 20ba192ce49e4a1b9e986368c5740394
+          ======================================================== */}
+      {activeModal === "modal-auth" && (
+        <AuthScreen isModal onClose={closeAll} />
+      )}
+
+      {/* ========================================================
           MODAL 3: TERRA EDITOR - USER ACCOUNT & PROFILE POPOVER MODAL
           Stitch Screen ID: 154402895d224d1a96e8fca1dbef30ff
           ======================================================== */}
@@ -1249,8 +1263,19 @@ export const Modals: React.FC<ModalsProps> = ({
               <div className="bg-[#f5f1ea] rounded-xl p-3.5 flex items-start gap-3.5 relative border border-[#e6e2da]">
                 {/* Profile Badge with Active Presence Ring */}
                 <div className="relative shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-[#705c30] text-white font-headline font-bold text-base flex items-center justify-center shadow-xs">
-                    SJ
+                  <div className="w-12 h-12 rounded-full bg-[#705c30] text-white font-headline font-bold text-base flex items-center justify-center shadow-xs overflow-hidden">
+                    {userProfile?.avatar_url ? (
+                      <img src={userProfile.avatar_url} alt="User Avatar" className="w-full h-full object-cover" />
+                    ) : userProfile?.full_name ? (
+                      userProfile.full_name
+                        .split(" ")
+                        .map((n: string) => n[0])
+                        .join("")
+                        .toUpperCase()
+                        .slice(0, 2)
+                    ) : (
+                      "SJ"
+                    )}
                   </div>
                   {/* Online status indicator dot */}
                   <span
@@ -1267,14 +1292,14 @@ export const Modals: React.FC<ModalsProps> = ({
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-1.5">
                     <h3 className="font-headline font-bold text-[15px] text-[#2e3230] leading-snug truncate">
-                      Sarah Jenkins
+                      {userProfile?.full_name || "Sarah Jenkins"}
                     </h3>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#c8e8d0] text-[#2a6038] tracking-wide shrink-0">
-                      Admin
+                      {userProfile ? "Pro" : "Admin"}
                     </span>
                   </div>
                   <p className="text-xs text-[#6b6358] truncate mt-0.5 font-body">
-                    sarah.j@terra.design
+                    {userProfile?.email || "sarah.j@terra.design"}
                   </p>
 
                   {/* Quick Status Badge Action */}
@@ -1572,12 +1597,31 @@ export const Modals: React.FC<ModalsProps> = ({
                 </button>
 
                 <button
-                  onClick={closeAll}
-                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-[#b83230] hover:bg-[#ffdad8]/40 transition-colors group"
+                  onClick={() => {
+                    closeAll();
+                    setActiveModal("modal-auth");
+                  }}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-[#4a7c59] hover:bg-[#eaf2ec] transition-colors group"
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[18px]">account_circle</span>
+                    Switch or Sign in with Google
+                  </span>
+                  <span className="text-[11px] font-medium text-[#4a7c59] group-hover:underline">
+                    Connect
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    closeAll();
+                    onSignOut?.();
+                  }}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-[#b83230] hover:bg-[#ffdad8]/40 transition-colors group cursor-pointer"
                 >
                   <span className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-[18px]">logout</span>
-                    Sign out of Sarah Jenkins
+                    {userProfile?.full_name ? `Sign out of ${userProfile.full_name}` : "Sign out & Exit"}
                   </span>
                   <span className="text-[11px] font-normal text-[#b83230]/80 group-hover:underline">
                     Disconnect
@@ -2268,6 +2312,38 @@ export const Modals: React.FC<ModalsProps> = ({
                     </div>
                     <p className="text-[11px] text-[#6b6358] mt-1">
                       Identity header, cloud storage meter, multiplayer cursor toggles, workspace switcher.
+                    </p>
+                  </div>
+
+                  {/* Screen 8: Terra - Sign Up with Google (Promptmark Auth) */}
+                  <div
+                    onClick={() => {
+                      setScreensModalOpen(false);
+                      setActiveModal("modal-auth");
+                    }}
+                    className="border border-[#e6e2da] hover:border-[#4a7c59] rounded-xl p-3 cursor-pointer transition-all hover:shadow-lg bg-[#fbfaf8] group"
+                  >
+                    <div className="aspect-video bg-[#ede8e0] rounded-lg overflow-hidden mb-2 relative border border-[#e6e2da]">
+                      <img
+                        src="/stitch-source/login_signup_google_20ba1.png"
+                        alt="Sign Up with Google Preview"
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
+                      />
+                      <span className="absolute top-2 right-2 bg-[#4a7c59] text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">
+                        Open Screen ↵
+                      </span>
+                      <span className="absolute bottom-1.5 left-1.5 bg-black/70 text-white text-[9px] font-mono px-1.5 py-0.5 rounded">
+                        ID: 20ba192c
+                      </span>
+                    </div>
+                    <div className="font-bold text-[13px] text-[#2e3230] flex items-center justify-between">
+                      <span>8. Sign Up with Google</span>
+                      <span className="text-[10px] font-bold bg-[#c8e8d0] text-[#2a6038] px-1.5 py-0.5 rounded">
+                        Auth Hub
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[#6b6358] mt-1">
+                      Collaborative sanctuary onboarding, Google OAuth one-click, password strength meter, social proof.
                     </p>
                   </div>
                 </div>
